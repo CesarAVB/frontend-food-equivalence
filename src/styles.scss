@@ -184,11 +184,28 @@ a {
 }
 
 @media (max-width: 768px) {
+  /* reduzir margem interna para mobile e ajustar hero */
   .container-fluid {
-    padding: 0 15px;
+    padding-left: 8px;
+    padding-right: 8px;
+  }
+
+  /* o hero atravessa a margem interna do container (compensando ambos os paddings)
+     agora com 8px cada -> margem negativa de 16px */
+  .hero, .hero-fullbleed {
+    width: calc(100% + 32px);
+    margin-left: -16px;
+    margin-right: -16px;
+    padding-left: 0;
+    padding-right: 0;
+    box-sizing: border-box;
   }
 
   main {
     padding: 15px 0;
+  }
+  /* evitar barra horizontal em telas pequenas causada por elementos com largura = 100vw */
+  html, body, .app-wrapper {
+    overflow-x: hidden;
   }
 }
