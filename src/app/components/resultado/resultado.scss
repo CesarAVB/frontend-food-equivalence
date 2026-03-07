@@ -345,3 +345,41 @@
     }
   }
 }
+
+// --- Responsivo (telinhas) ---
+@media (max-width: 480px) {
+  .resultado-card {
+    border-radius: 12px;
+
+    .res-header {
+      padding: 12px 14px;
+
+      .res-header-title { font-size: 15px; }
+      .res-header-subtitle { font-size: 12px; max-width: 220px; }
+    }
+
+    .res-stats {
+      .stat-card {
+        padding: 10px 12px;
+
+        .stat-icon { width: 34px; height: 34px; i { font-size: 13px; } }
+
+        .stat-info {
+          .stat-label { font-size: 10px; }
+          .stat-value { font-size: 13px; }
+        }
+      }
+    }
+
+    .res-body { padding: 12px 14px; }
+
+    .equiv-table {
+      thead th { padding: 8px 10px; font-size: 10px; }
+      tbody td { padding: 10px 12px; font-size: 13px; }
+
+      .th-button { gap: 4px; }
+    }
+
+    .res-footer { margin-top: 14px; .btn-export { width:100%; padding: 10px; } }
+  }
+}

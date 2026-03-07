@@ -242,3 +242,20 @@
     border-width: 2px;
   }
 }
+
+@media (max-width: 768px) {
+  .form-card {
+    border-radius: 12px;
+    box-shadow: 0 4px 18px rgba(26,95,122,0.08);
+
+    .card-head { padding: 12px 14px; }
+    .card-body-inner { padding: 14px 12px; }
+
+    .field-group { margin-bottom: 16px; }
+    .field-input { padding: 10px 38px; font-size: 14px; }
+
+    .form-actions { flex-direction: column; gap: 10px;
+      button { padding: 12px; }
+    }
+  }
+}
