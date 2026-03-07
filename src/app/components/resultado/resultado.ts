@@ -13,7 +13,7 @@ import { FormsModule } from '@angular/forms';
 export class ResultadoComponent {
 
   @Input() dados: EquivalenciaResponse | null = null;
-  ordenarPor: 'quantidade' | 'diferenca' = 'quantidade';
+  ordenarPor: 'quantidade' | 'diferenca' | 'alfabetica' = 'alfabetica';
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['dados'] && this.dados) {
@@ -28,10 +28,12 @@ export class ResultadoComponent {
 
     if (this.ordenarPor === 'quantidade') {
       equivalentes.sort((a, b) => a.quantidadeEquivalenteG - b.quantidadeEquivalenteG);
-    } else {
+    } else if (this.ordenarPor === 'diferenca') {
       equivalentes.sort((a, b) => a.diferencaPercentual - b.diferencaPercentual);
+    } else {
+      equivalentes.sort((a, b) => a.descricao.localeCompare(b.descricao, 'pt', { sensitivity: 'base' }));
     }
-
+    
     return equivalentes;
   }
 
@@ -42,13 +44,13 @@ export class ResultadoComponent {
   exportarCSV(): void {
     if (!this.dados) return;
 
-    let csv = 'Alimento,Quantidade (g),kcal\n';
-    csv += `${this.dados.alimentoSelecionado.descricao},${this.dados.quantidade},${this.dados.calorias}\n\n`;
+    let csv = 'Alimento,Quantidade (g)\n';
+    csv += `${this.dados.alimentoSelecionado.descricao},${this.dados.quantidade}\n\n`;
     csv += 'Equivalentes\n';
-    csv += 'Alimento,Quantidade (g),kcal,Diferença (%)\n';
+    csv += 'Alimento,Quantidade (g)\n';
 
-    this.dados.equivalentes.forEach(equiv => {
-      csv += `${equiv.descricao},${equiv.quantidadeEquivalenteG},${equiv.kcalTotais},${equiv.diferencaPercentual}\n`;
+    this.obterEquivalentes().forEach(equiv => {
+      csv += `${equiv.descricao},${equiv.quantidadeEquivalenteG}\n`;
     });
 
     const blob = new Blob([csv], { type: 'text/csv' });

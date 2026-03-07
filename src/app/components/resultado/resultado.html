@@ -75,13 +75,7 @@
         <i class="fas fa-list-ul"></i>Alimentos Equivalentes
         <span class="count-badge">{{ dados.equivalentes.length }}</span>
       </h6>
-      <div class="sort-control">
-        <label class="sort-label"><i class="fas fa-sort-amount-down"></i>Ordenar:</label>
-        <select [(ngModel)]="ordenarPor" class="sort-select">
-          <option value="quantidade">Quantidade ↑</option>
-          <option value="diferenca">Proximidade</option>
-        </select>
-      </div>
+      <!-- Ordenação fixa em ordem alfabética -->
     </div>
 
     <!-- Table -->
