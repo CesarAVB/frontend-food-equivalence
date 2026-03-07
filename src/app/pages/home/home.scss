@@ -271,6 +271,19 @@
       i { color: #ffffff !important; }
     }
 
+    /* número de passo em destaque */
+    .feature-step {
+      font-size: 26px;
+      font-weight: 900;
+      color: #4ade80;
+      background: linear-gradient(135deg, #0d3d52, #1a5f7a) !important;
+    }
+
+    &--center .feature-step {
+      background: linear-gradient(135deg, #b4d21a, #8fa814) !important;
+      color: #ffffff !important;
+    }
+
     .feature-icon {
       width: 68px;
       height: 68px;

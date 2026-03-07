@@ -1,15 +1,40 @@
 <!-- Empty State -->
 <div *ngIf="!dados" class="empty-state">
+
   <div class="empty-icon">
-    <i class="fas fa-search"></i>
+    <i class="fas fa-exchange-alt"></i>
   </div>
-  <h5>Nenhum resultado ainda</h5>
-  <p>Preencha o formulário ao lado para calcular as equivalências calóricas.</p>
+
+  <h5>Como usar a ferramenta</h5>
+  <p>Preencha o formulário ao lado seguindo os passos abaixo para ver as substituições do seu plano alimentar.</p>
+
   <div class="empty-tips">
-    <div class="tip"><i class="fas fa-lightbulb"></i>Digite o ID de um alimento</div>
-    <div class="tip"><i class="fas fa-weight"></i>Informe a quantidade em gramas</div>
-    <div class="tip"><i class="fas fa-search"></i>Clique em Calcular</div>
+    <div class="tip">
+      <span class="tip-num">1</span>
+      <div class="tip-icon"><i class="fas fa-th-list"></i></div>
+      <div class="tip-text">
+        <strong>Grupo alimentar</strong>
+        <span>Selecione a categoria do alimento</span>
+      </div>
+    </div>
+    <div class="tip">
+      <span class="tip-num">2</span>
+      <div class="tip-icon tip-icon--amber"><i class="fas fa-carrot"></i></div>
+      <div class="tip-text">
+        <strong>Alimento</strong>
+        <span>Escolha o item a ser substituído</span>
+      </div>
+    </div>
+    <div class="tip">
+      <span class="tip-num">3</span>
+      <div class="tip-icon tip-icon--green"><i class="fas fa-weight-hanging"></i></div>
+      <div class="tip-text">
+        <strong>Quantidade em gramas</strong>
+        <span>Informe os gramas prescritos</span>
+      </div>
+    </div>
   </div>
+
 </div>
 
 <!-- Results Card -->
