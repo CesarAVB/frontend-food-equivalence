@@ -69,7 +69,7 @@
               {{ carregandoAlimentos ? 'Carregando alimentos...' : '-- Selecione um alimento --' }}
             </option>
             <option *ngFor="let alimento of alimentos" [value]="alimento.id">
-              {{ alimento.descricao }} ({{ alimento.energiaKcal | number: '1.2-2' }} kcal/100g)
+              {{ alimento.descricao }}
             </option>
           </select>
         </div>
