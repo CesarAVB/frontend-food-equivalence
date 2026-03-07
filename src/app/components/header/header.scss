@@ -97,31 +97,6 @@
     }
   }
 
-  .status-chip {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    background: rgba(74, 222, 128, 0.12);
-    border: 1px solid rgba(74, 222, 128, 0.3);
-    color: #4ade80;
-    font-size: 12px;
-    font-weight: 600;
-    padding: 6px 12px;
-    border-radius: 100px;
-    white-space: nowrap;
-
-    i {
-      font-size: 8px;
-      animation: pulse 2s ease-in-out infinite;
-    }
-  }
-
-  @keyframes pulse {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.3; }
-  }
-
   @media (max-width: 480px) {
-    .status-chip { display: none; }
   }
 }

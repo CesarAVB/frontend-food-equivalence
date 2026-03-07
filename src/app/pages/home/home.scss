@@ -6,127 +6,147 @@
 
 // --- Hero ---
 .hero {
-  position: relative;
-  background: #ffffff;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 0;
   border-radius: 24px;
-  padding: 52px 44px;
   margin-bottom: 44px;
   overflow: hidden;
-  box-shadow: 0 4px 32px rgba(26, 95, 122, 0.1);
-  border: 1px solid rgba(26, 95, 122, 0.08);
+  box-shadow: 0 8px 40px rgba(13, 61, 82, 0.18);
+  min-height: 280px;
 
-  // faixa decorativa lateral esquerda
-  .hero-deco {
-    position: absolute;
-    left: 0;
-    top: 0;
-    bottom: 0;
-    width: 6px;
-    background: linear-gradient(180deg, #1a5f7a 0%, #4ade80 100%);
-    border-radius: 24px 0 0 24px;
+  // --- Coluna esquerda (escura) ---
+  .hero-left {
+    background: linear-gradient(135deg, #0d3d52 0%, #1a5f7a 100%);
+    padding: 52px 48px;
+    position: relative;
+    overflow: hidden;
+
+    // blob decorativo
+    &::after {
+      content: '';
+      position: absolute;
+      width: 280px;
+      height: 280px;
+      border-radius: 50%;
+      background: rgba(74, 222, 128, 0.06);
+      bottom: -100px;
+      right: -60px;
+      pointer-events: none;
+    }
   }
 
-  // círculos decorativos de fundo
-  &::before {
-    content: '';
-    position: absolute;
-    width: 340px;
-    height: 340px;
-    border-radius: 50%;
-    background: radial-gradient(circle, rgba(26,95,122,0.06) 0%, transparent 70%);
-    top: -100px;
-    right: -80px;
-    pointer-events: none;
+  .hero-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 11px;
+    font-weight: 700;
+    color: rgba(255,255,255,0.55);
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    margin-bottom: 18px;
+
+    i { color: #4ade80; font-size: 12px; }
   }
 
-  &::after {
-    content: '';
-    position: absolute;
-    width: 200px;
-    height: 200px;
-    border-radius: 50%;
-    background: radial-gradient(circle, rgba(74,222,128,0.08) 0%, transparent 70%);
-    bottom: -60px;
-    left: 30%;
-    pointer-events: none;
+  .hero-title {
+    font-size: 44px;
+    font-weight: 700;
+    color: #ffffff;
+    line-height: 1.1;
+    margin-bottom: 18px;
+
+    .hero-title-accent {
+      color: #4ade80;
+      font-weight: 900;
+    }
   }
 
-  .hero-content {
+  .hero-subtitle {
+    font-size: 15px;
+    color: rgba(255,255,255,0.65);
+    line-height: 1.65;
+    max-width: 420px;
+    margin-bottom: 36px;
+  }
+
+  .hero-stats {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    position: relative;
+    z-index: 1;
+
+    .stat {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: rgba(255,255,255,0.75);
+      font-size: 13px;
+      line-height: 1.3;
+
+      i {
+        font-size: 20px;
+        color: #4ade80;
+        flex-shrink: 0;
+      }
+    }
+
+    .stat-divider {
+      width: 1px;
+      height: 32px;
+      background: rgba(255,255,255,0.15);
+    }
+  }
+
+  // --- Coluna direita (clara) ---
+  .hero-right {
+    background: #f0f8f5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 48px;
+    align-self: stretch;
+    position: relative;
+
+    &::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at center, rgba(26,95,122,0.07) 0%, transparent 70%);
+    }
+  }
+
+  .hero-img-wrap {
     position: relative;
     display: flex;
     align-items: center;
-    gap: 48px;
-  }
-
-  .hero-logo {
-    flex-shrink: 0;
+    justify-content: center;
 
     .logo-img {
-      height: 140px;
+      height: 150px;
       width: auto;
-      filter: drop-shadow(0 8px 24px rgba(26, 95, 122, 0.22));
-      animation: float 4s ease-in-out infinite;
+      position: relative;
+      z-index: 1;
+      filter: drop-shadow(0 10px 28px rgba(26, 95, 122, 0.25));
     }
   }
 
-  .hero-text {
-    .hero-eyebrow {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      font-size: 12px;
-      font-weight: 700;
-      color: #1a5f7a;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      background: rgba(26, 95, 122, 0.07);
-      padding: 5px 12px;
-      border-radius: 100px;
-      margin-bottom: 16px;
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
 
-      i { color: #4ade80; font-size: 11px; }
-    }
+    .hero-right { display: none; }
 
-    .hero-title {
-      font-size: 46px;
-      font-weight: 700;
-      color: #1e2d2a;
-      margin-bottom: 16px;
-      line-height: 1.1;
+    .hero-left { padding: 40px 28px; }
 
-      strong {
-        color: #1a5f7a;
-        font-weight: 900;
-      }
-    }
+    .hero-title { font-size: 32px; }
 
-    .hero-subtitle {
-      font-size: 16px;
-      color: #5f7a72;
-      margin-bottom: 28px;
-      max-width: 460px;
-      line-height: 1.65;
-    }
-
-    .hero-chips {
-      display: flex;
+    .hero-stats {
       flex-wrap: wrap;
-      gap: 10px;
-
-      .chip {
-        background: #f0f8f5;
-        border: 1px solid #d4e8e0;
-        color: #1a5f7a;
-        padding: 7px 15px;
-        border-radius: 100px;
-        font-size: 13px;
-        font-weight: 600;
-        display: flex;
-        align-items: center;
-        gap: 6px;
-
-        i { color: #4ade80; font-size: 11px; }
-      }
+      gap: 14px;
+      .stat-divider { display: none; }
     }
   }
 }
@@ -134,6 +154,11 @@
 @keyframes float {
   0%, 100% { transform: translateY(0); }
   50% { transform: translateY(-10px); }
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
 }
 
 // --- Main Content ---
@@ -228,27 +253,6 @@
       font-size: 14px;
       line-height: 1.65;
       margin: 0;
-    }
-  }
-}
-
-// --- Responsivo ---
-@media (max-width: 768px) {
-  .hero {
-    padding: 40px 24px;
-
-    .hero-content {
-      flex-direction: column;
-      text-align: center;
-      gap: 26px;
-    }
-
-    .hero-logo .logo-img { height: 90px; }
-
-    .hero-text {
-      .hero-title { font-size: 32px; }
-      .hero-subtitle { font-size: 15px; }
-      .hero-chips { justify-content: center; }
     }
   }
 }

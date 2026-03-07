@@ -3,57 +3,11 @@
   border-top: 3px solid #4ade80;
   padding: 18px 0;
   margin-top: 60px;
-
-  .footer-inner {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    gap: 12px;
-  }
+  text-align: center;
 
   .footer-copy {
     font-size: 13px;
     color: rgba(255, 255, 255, 0.55);
     margin: 0;
-
-    a {
-      color: rgba(255, 255, 255, 0.55);
-      text-decoration: none;
-      font-weight: 600;
-      transition: color 0.3s ease;
-
-      &:hover { color: #ffffff; }
-    }
-  }
-
-  .insta-link {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    color: #ffffff;
-    text-decoration: none;
-    font-size: 13px;
-    font-weight: 600;
-    background: linear-gradient(135deg, #833ab4, #fd1d1d, #fcb045);
-    padding: 6px 14px;
-    border-radius: 100px;
-    transition: all 0.3s ease;
-
-    i { font-size: 16px; }
-
-    &:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 4px 16px rgba(253, 29, 29, 0.45);
-      color: #ffffff;
-    }
-  }
-
-  @media (max-width: 600px) {
-    .footer-inner {
-      flex-direction: column;
-      align-items: center;
-      text-align: center;
-    }
   }
 }
