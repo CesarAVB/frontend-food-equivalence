@@ -1,59 +1,57 @@
-# FrontendFoodEquivalence
+# Lista de Substituição
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.3.6.
+Aplicativo frontend em Angular para calcular equivalências e sugerir substituições alimentares.
 
-## Development server
+## Descrição
+Projeto para auxiliar pacientes com um guia de substituições alimentares. Inclui formulário de cálculo de equivalências, resultados com exportação e uma interface focada em simplicidade e usabilidade.
 
-To start a local development server, run:
+## Tecnologias
+- Angular 20 (standalone components)
+- TypeScript
+- SCSS
+- Bootstrap 5 (carregado como CSS compilado em `angular.json`)
+- FontAwesome
 
-```bash
-ng serve
-```
+## Pré-requisitos
+- Node.js 18+ (ou LTS atual)
+- npm
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
-
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
-```bash
-ng generate component component-name
-```
-
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+## Instalação
+1. Abra o terminal na raiz do projeto
+2. Instale dependências:
 
 ```bash
-ng generate --help
+npm install
 ```
 
-## Building
-
-To build the project run:
+## Execução (desenvolvimento)
+Inicie a aplicação em modo de desenvolvimento:
 
 ```bash
-ng build
+npm start
 ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+O script `start` é configurado no `package.json` e iniciará o servidor de desenvolvimento.
 
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
+## Build
+Para gerar a versão de produção (se configurado):
 
 ```bash
-ng test
+npm run build
 ```
 
-## Running end-to-end tests
+## Estrutura principal
+- `src/app/components` — componentes reutilizáveis (header, footer, formulário, resultado)
+- `src/app/pages/home` — página inicial e hero
+- `src/app/services` — serviços e lógica de cálculo
+- `public/images` — logos e imagens usadas
 
-For end-to-end (e2e) testing, run:
+## Observações importantes
+- O projeto carrega o CSS compilado do Bootstrap (`node_modules/bootstrap/dist/css/bootstrap.min.css`) para evitar warnings de deprecação do Sass do Bootstrap.
+- O `header` e o `footer` foram simplificados: o status "Online" e o link do Instagram foram removidos conforme personalização do projeto.
 
-```bash
-ng e2e
-```
+## Contato
+Desenvolvido por César Augusto Vieira Bezerra.
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+---
+© 2026 Desenvolvido por César Augusto Vieira Bezerra — Todos os direitos reservados.
