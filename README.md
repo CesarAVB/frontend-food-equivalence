@@ -2,6 +2,12 @@
 
 Aplicativo frontend em Angular para calcular equivalências e sugerir substituições alimentares.
 
+<img width="1919" height="867" alt="image" src="https://github.com/user-attachments/assets/0e4d1217-f27d-4205-8030-650367185a9c" />
+
+<img width="1919" height="869" alt="image" src="https://github.com/user-attachments/assets/bc3e6dfa-a516-4f1b-a6f0-f6d5e6952e00" />
+
+<img width="1919" height="871" alt="image" src="https://github.com/user-attachments/assets/341375f1-64d7-4e4c-b0b6-7c8684399640" />
+
 ## Descrição
 Projeto para auxiliar pacientes com um guia de substituições alimentares. Inclui formulário de cálculo de equivalências, resultados com exportação e uma interface focada em simplicidade e usabilidade.
 
