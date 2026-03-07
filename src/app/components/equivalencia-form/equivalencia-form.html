@@ -7,7 +7,7 @@
     </div>
     <div>
       <h5 class="card-head-title">Calcular Equivalências</h5>
-      <p class="card-head-subtitle">Informe o alimento e a quantidade</p>
+      <p class="card-head-subtitle">Selecione o alimento e a quantidade</p>
     </div>
   </div>
 
@@ -28,27 +28,58 @@
     <!-- Form -->
     <form [formGroup]="form" (ngSubmit)="enviar()">
 
+      <!-- Selecionar Grupo -->
       <div class="field-group">
-        <label for="alimentoId" class="field-label">
-          <i class="fas fa-hashtag"></i>ID do Alimento
+        <label for="grupo" class="field-label">
+          <i class="fas fa-layer-group"></i>Grupo Alimentar
         </label>
         <div class="field-input-wrap">
-          <span class="field-prefix"><i class="fas fa-leaf"></i></span>
-          <input
-            type="number"
+          <span class="field-prefix"><i class="fas fa-folder"></i></span>
+          <select
             class="field-input"
-            id="alimentoId"
-            formControlName="alimentoId"
-            placeholder="Ex: 1"
-            [class.invalid]="form.get('alimentoId')?.invalid && form.get('alimentoId')?.touched"
-            min="1">
+            id="grupo"
+            formControlName="grupo"
+            [class.invalid]="form.get('grupo')?.invalid && form.get('grupo')?.touched">
+            <option value="" disabled>-- Selecione um grupo --</option>
+            <option *ngFor="let grupo of grupos" [value]="grupo">
+              {{ grupo }}
+            </option>
+          </select>
         </div>
         <span class="field-error"
-          *ngIf="form.get('alimentoId')?.invalid && form.get('alimentoId')?.touched">
-          <i class="fas fa-exclamation-triangle"></i>ID do alimento é obrigatório
+          *ngIf="form.get('grupo')?.invalid && form.get('grupo')?.touched">
+          <i class="fas fa-exclamation-triangle"></i>Grupo é obrigatório
         </span>
       </div>
 
+      <!-- Selecionar Alimento -->
+      <div class="field-group">
+        <label for="alimentoId" class="field-label">
+          <i class="fas fa-leaf"></i>Alimento
+        </label>
+        <div class="field-input-wrap">
+          <span class="field-prefix"><i class="fas fa-apple-alt"></i></span>
+          <select
+            class="field-input"
+            id="alimentoId"
+            formControlName="alimentoId"
+            [disabled]="alimentos.length === 0 || carregandoAlimentos"
+            [class.invalid]="form.get('alimentoId')?.invalid && form.get('alimentoId')?.touched">
+            <option value="" disabled>
+              {{ carregandoAlimentos ? 'Carregando alimentos...' : '-- Selecione um alimento --' }}
+            </option>
+            <option *ngFor="let alimento of alimentos" [value]="alimento.id">
+              {{ alimento.descricao }} ({{ alimento.energiaKcal | number: '1.2-2' }} kcal/100g)
+            </option>
+          </select>
+        </div>
+        <span class="field-error"
+          *ngIf="form.get('alimentoId')?.invalid && form.get('alimentoId')?.touched">
+          <i class="fas fa-exclamation-triangle"></i>Alimento é obrigatório
+        </span>
+      </div>
+
+      <!-- Quantidade -->
       <div class="field-group">
         <label for="quantidade" class="field-label">
           <i class="fas fa-weight"></i>Quantidade
@@ -72,6 +103,7 @@
         </span>
       </div>
 
+      <!-- Botões de Ação -->
       <div class="form-actions">
         <button type="submit" class="btn-calc" [disabled]="carregando || form.invalid">
           <span class="spinner-border spinner-border-sm" *ngIf="carregando" role="status"></span>

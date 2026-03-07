@@ -1,7 +1,7 @@
 import { Component, Output, EventEmitter, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { EquivalenciaService } from '../../services/equivalencia';
+import { EquivalenciaService, AlimentoLista } from '../../services/equivalencia';
 import { CalcularEquivalenciasRequest } from '../../models/calcular-equivalencias-request';
 
 @Component({
@@ -17,8 +17,12 @@ export class EquivalenciaFormComponent implements OnInit {
 
   form!: FormGroup;
   carregando = false;
+  carregandoAlimentos = false;
   mensagem = '';
   tipoMensagem: 'success' | 'error' | 'info' = 'info';
+
+  grupos: string[] = [];
+  alimentos: AlimentoLista[] = [];
 
   constructor(
     private fb: FormBuilder,
@@ -27,12 +31,50 @@ export class EquivalenciaFormComponent implements OnInit {
 
   ngOnInit(): void {
     this.inicializarForm();
+    this.carregarGrupos();
   }
 
   inicializarForm(): void {
     this.form = this.fb.group({
+      grupo: ['', [Validators.required]],
       alimentoId: ['', [Validators.required, Validators.min(1)]],
       quantidade: ['', [Validators.required, Validators.min(0.01)]]
+    });
+
+    // Quando o grupo mudar, buscar alimentos
+    this.form.get('grupo')?.valueChanges.subscribe((grupo) => {
+      if (grupo) {
+        this.carregarAlimentos(grupo);
+        this.form.get('alimentoId')?.reset();
+      }
+    });
+  }
+
+  carregarGrupos(): void {
+    this.carregandoAlimentos = true;
+    this.equivalenciaService.listarGrupos().subscribe({
+      next: (grupos) => {
+        this.grupos = grupos;
+        this.carregandoAlimentos = false;
+      },
+      error: () => {
+        this.carregandoAlimentos = false;
+        this.exibirMensagem('Erro ao carregar grupos', 'error');
+      }
+    });
+  }
+
+  carregarAlimentos(grupo: string): void {
+    this.carregandoAlimentos = true;
+    this.equivalenciaService.listarAlimentosPorGrupo(grupo).subscribe({
+      next: (alimentos) => {
+        this.alimentos = alimentos;
+        this.carregandoAlimentos = false;
+      },
+      error: () => {
+        this.carregandoAlimentos = false;
+        this.exibirMensagem('Erro ao carregar alimentos', 'error');
+      }
     });
   }
 
@@ -66,6 +108,7 @@ export class EquivalenciaFormComponent implements OnInit {
 
   limpar(): void {
     this.form.reset();
+    this.alimentos = [];
     this.mensagem = '';
     this.resultado.emit(null);
   }
