@@ -21,7 +21,7 @@
       <i class="fas fa-check-circle"></i>
     </div>
     <div class="res-header-info">
-      <h5 class="res-header-title">Resultados das Equivalências</h5>
+      <h5 class="res-header-title">Substituições Disponíveis</h5>
       <p class="res-header-subtitle">{{ dados.alimentoSelecionado.descricao }}</p>
     </div>
   </div>
@@ -91,9 +91,6 @@
           <tr>
             <th><i class="fas fa-apple-alt"></i>Alimento</th>
             <th class="text-center"><i class="fas fa-weight"></i>Qtd (g)</th>
-            <th class="text-center"><i class="fas fa-fire"></i>kcal</th>
-            <th class="text-center"><i class="fas fa-percent"></i>Dif.</th>
-            <th class="text-center">Ação</th>
           </tr>
         </thead>
         <tbody>
@@ -105,21 +102,6 @@
               {{ equiv.descricao }}
             </td>
             <td class="text-center fw-bold">{{ equiv.quantidadeEquivalenteG | number: '1.1-1' }}</td>
-            <td class="text-center kcal-col">{{ equiv.kcalTotais | number: '1.1-1' }}</td>
-            <td class="text-center">
-              <span class="diff-badge"
-                [class.diff-good]="equiv.diferencaPercentual < 2"
-                [class.diff-warn]="equiv.diferencaPercentual >= 2">
-                {{ equiv.diferencaPercentual | number: '1.1-1' }}%
-              </span>
-            </td>
-            <td class="text-center">
-              <button class="copy-btn"
-                (click)="copiarParaClipboard(equiv.quantidadeEquivalenteG + ' g de ' + equiv.descricao)"
-                title="Copiar">
-                <i class="fas fa-copy"></i>
-              </button>
-            </td>
           </tr>
         </tbody>
       </table>

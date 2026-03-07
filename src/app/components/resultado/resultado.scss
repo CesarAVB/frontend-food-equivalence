@@ -304,41 +304,7 @@
         }
       }
 
-      .kcal-col { color: #7a9e96; }
-
-      .diff-badge {
-        display: inline-flex;
-        align-items: center;
-        padding: 3px 10px;
-        border-radius: 100px;
-        font-size: 12px;
-        font-weight: 700;
-
-        &.diff-good { background: #d1fae5; color: #065f46; }
-        &.diff-warn { background: #fef3c7; color: #92400e; }
-      }
-
-      .copy-btn {
-        background: #f0f7f9;
-        border: 1px solid #d4e8e0;
-        color: #1a5f7a;
-        width: 32px;
-        height: 32px;
-        border-radius: 8px;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
-        transition: all 0.2s;
-
-        &:hover {
-          background: #1a5f7a;
-          color: #ffffff;
-          border-color: #1a5f7a;
-        }
-
-        i { font-size: 13px; }
-      }
+      // Removidas as colunas de kcal, diferença e ação — estilos correspondentes eliminados
     }
   }
 
