@@ -5,6 +5,9 @@ import { environment } from '../../environments/environment';
 import { CalcularEquivalenciasRequest } from '../models/calcular-equivalencias-request';
 import { EquivalenciaResponse } from '../models/equivalencia-response';
 
+// ====================================================
+// Interface - Alimento para Listar
+// ====================================================
 export interface AlimentoLista {
   id: number;
   descricao: string;
@@ -22,9 +25,8 @@ export class EquivalenciaService {
   constructor(private http: HttpClient) { }
 
   // ====================================================
-  // POST - Calcular Equivalências
+  // Métodos - Calcular Equivalências
   // ====================================================
-
   calcularEquivalencias(request: CalcularEquivalenciasRequest): Observable<EquivalenciaResponse> {
     return this.http.post<EquivalenciaResponse>(
       `${this.apiUrl}/calcular`,
@@ -33,27 +35,8 @@ export class EquivalenciaService {
   }
 
   // ====================================================
-  // GET - Listar Alimentos por Grupo
+  // Métodos - Listar Grupos Disponíveis
   // ====================================================
-
-  /**
-   * Busca alimentos de um grupo específico
-   * GET /api/v1/equivalencias/alimentos/grupo/CEREAIS_E_DERIVADOS
-   */
-  listarAlimentosPorGrupo(grupo: string): Observable<AlimentoLista[]> {
-    return this.http.get<AlimentoLista[]>(
-      `${this.apiUrl}/alimentos/grupo/${grupo}`
-    );
-  }
-
-  // ====================================================
-  // GET - Listar Todos os Grupos
-  // ====================================================
-
-  /**
-   * Retorna lista de grupos disponíveis
-   * GET /api/v1/equivalencias/grupos
-   */
   listarGrupos(): Observable<string[]> {
     return this.http.get<string[]>(
       `${this.apiUrl}/grupos`
@@ -61,17 +44,29 @@ export class EquivalenciaService {
   }
 
   // ====================================================
-  // GET - Buscar Alimentos por Descrição
+  // Métodos - Listar Alimentos por Grupo
   // ====================================================
+  listarAlimentosPorGrupo(grupo: string): Observable<AlimentoLista[]> {
+    const grupoEnum = this.converterGrupoParaEnum(grupo);
+    return this.http.get<AlimentoLista[]>(
+      `${this.apiUrl}/alimentos/grupo/${grupoEnum}`
+    );
+  }
 
-  /**
-   * Busca alimentos por nome
-   * GET /api/v1/equivalencias/alimentos/buscar?descricao=arroz
-   */
+  // ====================================================
+  // Métodos - Buscar Alimentos por Descrição
+  // ====================================================
   buscarAlimentos(descricao: string): Observable<AlimentoLista[]> {
     return this.http.get<AlimentoLista[]>(
       `${this.apiUrl}/alimentos/buscar`,
       { params: { descricao } }
     );
+  }
+
+  // ====================================================
+  // Métodos Privados - Converter Grupo para Formato Enum
+  // ====================================================
+  private converterGrupoParaEnum(grupo: string): string {
+    return grupo.toUpperCase().replace(/ /g, '_');
   }
 }
