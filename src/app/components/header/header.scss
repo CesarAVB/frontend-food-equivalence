@@ -1,63 +1,36 @@
-.site-header {
-  background: linear-gradient(135deg, #0d3d52 0%, #1a5f7a 55%, #1e6e8a 100%);
-  box-shadow: 0 3px 20px rgba(13, 61, 82, 0.45);
+  .site-header {
+  background: #f0f8f5;
+  border-bottom: 2px solid #4ade80;
+  box-shadow: 0 1px 8px rgba(26, 95, 122, 0.08);
   position: sticky;
   top: 0;
   z-index: 1000;
-  padding: 14px 0;
+  padding: 8px 0;
 
   .header-inner {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 16px;
+    gap: 12px;
   }
 
   // --- Brand ---
   .brand {
-    display: flex;
+    display: inline-flex;
     align-items: center;
-    gap: 14px;
     text-decoration: none;
     flex-shrink: 0;
+    padding: 4px 0;
+    opacity: 1;
+    transition: opacity 180ms ease;
 
-    .brand-icon {
-      width: 42px;
-      height: 42px;
-      background: rgba(74, 222, 128, 0.15);
-      border: 2px solid rgba(74, 222, 128, 0.35);
-      border-radius: 12px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: background 0.3s ease;
+    &:hover { opacity: 0.85; }
 
-      i {
-        font-size: 18px;
-        color: #4ade80;
-      }
-
-      &:hover { background: rgba(74, 222, 128, 0.25); }
-    }
-
-    .brand-text {
-      display: flex;
-      flex-direction: column;
-      line-height: 1.2;
-    }
-
-    .brand-name {
-      font-size: 18px;
-      font-weight: 800;
-      color: #4ade80;
-      letter-spacing: -0.2px;
-    }
-
-    .brand-sub {
-      font-size: 11px;
-      color: rgba(255, 255, 255, 0.5);
-      font-weight: 500;
-      letter-spacing: 0.2px;
+    .brand-logo {
+      height: 52px;
+      width: auto;
+      display: block;
+      object-fit: contain;
     }
   }
 
@@ -73,22 +46,22 @@
   .insta-btn {
     display: inline-flex;
     align-items: center;
-    gap: 7px;
+    gap: 6px;
     background: linear-gradient(135deg, #833ab4, #fd1d1d, #fcb045);
     color: #ffffff;
     text-decoration: none;
-    padding: 7px 15px;
+    padding: 6px 14px;
     border-radius: 100px;
     font-size: 13px;
     font-weight: 600;
-    transition: all 0.3s ease;
+    transition: opacity 0.2s ease, transform 0.2s ease;
     white-space: nowrap;
 
-    i { font-size: 16px; }
+    i { font-size: 15px; }
 
     &:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 4px 16px rgba(253, 29, 29, 0.45);
+      opacity: 0.88;
+      transform: translateY(-1px);
       color: #ffffff;
     }
 
@@ -97,6 +70,9 @@
     }
   }
 
-  @media (max-width: 480px) {
+  @media (max-width: 560px) {
+    .header-inner { justify-content: center; }
+    .header-right { display: none; }
+    .brand-logo { height: 44px; }
   }
 }

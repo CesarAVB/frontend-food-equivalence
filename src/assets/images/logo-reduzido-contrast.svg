@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="260" height="64" viewBox="0 0 260 64" role="img" aria-label="André Reis - Nutrição e Performance">
+  <defs>
+    <style>
+      .text-main{font-family: 'Segoe UI', Arial, sans-serif; font-weight:800; font-size:20px; fill:#0b5960}
+      .text-sub{font-family: 'Segoe UI', Arial, sans-serif; font-weight:600; font-size:10px; fill:#1a5f7a; opacity:0.9}
+    </style>
+  </defs>
+  <!-- simple diamond icon -->
+  <g transform="translate(6,6)">
+    <rect x="12" y="0" width="16" height="16" rx="2" fill="#4ade80" transform="rotate(45 20 8)"/>
+    <rect x="0" y="0" width="10" height="10" rx="1" fill="#0b5960" transform="rotate(45 5 5) translate(8,0)" opacity="0.95"/>
+  </g>
+  <!-- rounded dark pill behind text for contrast -->
+  <rect x="58" y="6" rx="10" ry="10" width="192" height="48" fill="rgba(255,255,255,0.92)" />
+  <!-- text -->
+  <text x="70" y="29" class="text-main">ANDRÉ REIS</text>
+  <text x="70" y="44" class="text-sub">NUTRIÇÃO &amp; PERFORMANCE</text>
+</svg>
