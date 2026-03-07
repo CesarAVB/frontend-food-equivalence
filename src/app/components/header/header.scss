@@ -1,0 +1,83 @@
+.site-header {
+  background: linear-gradient(135deg, #0d3d52 0%, #1a5f7a 55%, #1e6e8a 100%);
+  box-shadow: 0 3px 20px rgba(13, 61, 82, 0.45);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+
+  .navbar {
+    padding: 12px 0;
+  }
+
+  .navbar-brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    text-decoration: none;
+
+    .brand-logo {
+      height: 40px;
+      width: auto;
+      border-radius: 8px;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+      &:hover {
+        transform: scale(1.06);
+        box-shadow: 0 4px 14px rgba(0,0,0,0.25);
+      }
+    }
+
+    .brand-name {
+      font-size: 20px;
+      font-weight: 700;
+      color: #4ade80;
+      letter-spacing: 0.2px;
+    }
+  }
+
+  .navbar-toggler {
+    border: 2px solid rgba(74, 222, 128, 0.5);
+    border-radius: 8px;
+    padding: 7px 11px;
+    background: transparent;
+
+    &:focus {
+      box-shadow: 0 0 0 3px rgba(74, 222, 128, 0.3);
+    }
+
+    .toggler-icon {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+
+      span {
+        display: block;
+        width: 22px;
+        height: 2px;
+        background: #4ade80;
+        border-radius: 2px;
+        transition: all 0.3s ease;
+      }
+    }
+  }
+
+  .nav-link {
+    color: rgba(255, 255, 255, 0.82) !important;
+    font-weight: 500;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 15px;
+    transition: all 0.25s ease;
+
+    i {
+      color: #4ade80;
+      margin-right: 4px;
+    }
+
+    &:hover {
+      color: #ffffff !important;
+      background: rgba(74, 222, 128, 0.15);
+      transform: translateY(-1px);
+    }
+  }
+}

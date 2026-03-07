@@ -1,0 +1,78 @@
+<div class="home-container">
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="hero-shapes">
+      <div class="shape shape-1"></div>
+      <div class="shape shape-2"></div>
+      <div class="shape shape-3"></div>
+    </div>
+    <div class="hero-content">
+      <div class="hero-logo">
+        <img src="images/logo.png" alt="Lista de Substituição" class="logo-img">
+      </div>
+      <div class="hero-text">
+        <h1 class="hero-title">Lista de Substituição</h1>
+        <p class="hero-subtitle">
+          Seu nutricionista preparou este guia especialmente para você.
+          Escolha um alimento e descubra opções igualmente nutritivas para substituí-lo.
+        </p>
+        <div class="hero-chips">
+          <span class="chip"><i class="fas fa-fire-alt"></i>Equivalência Calórica</span>
+          <span class="chip"><i class="fas fa-leaf"></i>Nutricional</span>
+          <span class="chip"><i class="fas fa-exchange-alt"></i>Substituições</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Main Tool -->
+  <section class="main-content">
+    <div class="row g-4">
+      <div class="col-lg-5">
+        <app-equivalencia-form (resultado)="onResultado($event)"></app-equivalencia-form>
+      </div>
+      <div class="col-lg-7">
+        <app-resultado [dados]="resultado"></app-resultado>
+      </div>
+    </div>
+  </section>
+
+  <!-- Feature Cards -->
+  <section class="features" id="sobre">
+    <div class="features-header">
+      <h2 class="features-title">Como funciona?</h2>
+      <p class="features-subtitle">Simples e rápida: encontre opções de substituição dentro do seu plano alimentar</p>
+    </div>
+    <div class="row g-4">
+      <div class="col-md-4">
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fas fa-calculator"></i>
+          </div>
+          <h5>Cálculo Preciso</h5>
+          <p>Veja opções de alimentos do mesmo grupo com a mesma quantidade de calorias do item escolhido.</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="feature-card feature-card--center">
+          <div class="feature-icon">
+            <i class="fas fa-exchange-alt"></i>
+          </div>
+          <h5>Substituições Inteligentes</h5>
+          <p>Escolha um alimento diferente que cabe no seu plano alimentar sem sair da meta calórica.</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fas fa-heart"></i>
+          </div>
+          <h5>Respeite seu plano</h5>
+          <p>Substituá alimentos sem culpa e sem improvisação, sempre dentro do que seu nutricionista recomendou.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</div>

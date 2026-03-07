@@ -1,0 +1,136 @@
+<!-- Empty State -->
+<div *ngIf="!dados" class="empty-state">
+  <div class="empty-icon">
+    <i class="fas fa-search"></i>
+  </div>
+  <h5>Nenhum resultado ainda</h5>
+  <p>Preencha o formulário ao lado para calcular as equivalências calóricas.</p>
+  <div class="empty-tips">
+    <div class="tip"><i class="fas fa-lightbulb"></i>Digite o ID de um alimento</div>
+    <div class="tip"><i class="fas fa-weight"></i>Informe a quantidade em gramas</div>
+    <div class="tip"><i class="fas fa-search"></i>Clique em Calcular</div>
+  </div>
+</div>
+
+<!-- Results Card -->
+<div *ngIf="dados" class="resultado-card">
+
+  <!-- Header -->
+  <div class="res-header">
+    <div class="res-header-icon">
+      <i class="fas fa-check-circle"></i>
+    </div>
+    <div class="res-header-info">
+      <h5 class="res-header-title">Resultados das Equivalências</h5>
+      <p class="res-header-subtitle">{{ dados.alimentoSelecionado.descricao }}</p>
+    </div>
+  </div>
+
+  <!-- Stat Cards -->
+  <div class="res-stats">
+    <div class="stat-card">
+      <div class="stat-icon">
+        <i class="fas fa-utensils"></i>
+      </div>
+      <div class="stat-info">
+        <span class="stat-label">Alimento</span>
+        <span class="stat-value">{{ dados.alimentoSelecionado.descricao }}</span>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon stat-icon--accent">
+        <i class="fas fa-weight"></i>
+      </div>
+      <div class="stat-info">
+        <span class="stat-label">Quantidade</span>
+        <span class="stat-value">{{ dados.quantidade }} g</span>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon stat-icon--green">
+        <i class="fas fa-fire-alt"></i>
+      </div>
+      <div class="stat-info">
+        <span class="stat-label">Calorias</span>
+        <span class="stat-value">{{ dados.calorias | number: '1.1-1' }} kcal</span>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon stat-icon--orange">
+        <i class="fas fa-tag"></i>
+      </div>
+      <div class="stat-info">
+        <span class="stat-label">Grupo</span>
+        <span class="stat-value">{{ dados.alimentoSelecionado.grupo }}</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Table Section -->
+  <div class="res-body">
+
+    <!-- Controls -->
+    <div class="table-controls">
+      <h6 class="table-title">
+        <i class="fas fa-list-ul"></i>Alimentos Equivalentes
+        <span class="count-badge">{{ dados.equivalentes.length }}</span>
+      </h6>
+      <div class="sort-control">
+        <label class="sort-label"><i class="fas fa-sort-amount-down"></i>Ordenar:</label>
+        <select [(ngModel)]="ordenarPor" class="sort-select">
+          <option value="quantidade">Quantidade ↑</option>
+          <option value="diferenca">Proximidade</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Table -->
+    <div class="table-responsive">
+      <table class="equiv-table">
+        <thead>
+          <tr>
+            <th><i class="fas fa-apple-alt"></i>Alimento</th>
+            <th class="text-center"><i class="fas fa-weight"></i>Qtd (g)</th>
+            <th class="text-center"><i class="fas fa-fire"></i>kcal</th>
+            <th class="text-center"><i class="fas fa-percent"></i>Dif.</th>
+            <th class="text-center">Ação</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let equiv of obterEquivalentes()" [class.row-highlight]="equiv.diferencaPercentual < 1">
+            <td class="food-name">
+              <span *ngIf="equiv.diferencaPercentual < 1" class="best-badge" title="Melhor correspondência">
+                <i class="fas fa-star"></i>
+              </span>
+              {{ equiv.descricao }}
+            </td>
+            <td class="text-center fw-bold">{{ equiv.quantidadeEquivalenteG | number: '1.1-1' }}</td>
+            <td class="text-center kcal-col">{{ equiv.kcalTotais | number: '1.1-1' }}</td>
+            <td class="text-center">
+              <span class="diff-badge"
+                [class.diff-good]="equiv.diferencaPercentual < 2"
+                [class.diff-warn]="equiv.diferencaPercentual >= 2">
+                {{ equiv.diferencaPercentual | number: '1.1-1' }}%
+              </span>
+            </td>
+            <td class="text-center">
+              <button class="copy-btn"
+                (click)="copiarParaClipboard(equiv.quantidadeEquivalenteG + ' g de ' + equiv.descricao)"
+                title="Copiar">
+                <i class="fas fa-copy"></i>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Footer -->
+    <div class="res-footer">
+      <button class="btn-export" (click)="exportarCSV()">
+        <i class="fas fa-file-csv"></i>Exportar CSV
+      </button>
+    </div>
+
+  </div>
+</div>
