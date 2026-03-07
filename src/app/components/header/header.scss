@@ -4,80 +4,124 @@
   position: sticky;
   top: 0;
   z-index: 1000;
+  padding: 14px 0;
 
-  .navbar {
-    padding: 12px 0;
-  }
-
-  .navbar-brand {
+  .header-inner {
     display: flex;
     align-items: center;
-    gap: 12px;
+    justify-content: space-between;
+    gap: 16px;
+  }
+
+  // --- Brand ---
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 14px;
     text-decoration: none;
+    flex-shrink: 0;
 
-    .brand-logo {
-      height: 40px;
-      width: auto;
-      border-radius: 8px;
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    .brand-icon {
+      width: 42px;
+      height: 42px;
+      background: rgba(74, 222, 128, 0.15);
+      border: 2px solid rgba(74, 222, 128, 0.35);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.3s ease;
 
-      &:hover {
-        transform: scale(1.06);
-        box-shadow: 0 4px 14px rgba(0,0,0,0.25);
+      i {
+        font-size: 18px;
+        color: #4ade80;
       }
+
+      &:hover { background: rgba(74, 222, 128, 0.25); }
+    }
+
+    .brand-text {
+      display: flex;
+      flex-direction: column;
+      line-height: 1.2;
     }
 
     .brand-name {
-      font-size: 20px;
-      font-weight: 700;
+      font-size: 18px;
+      font-weight: 800;
       color: #4ade80;
+      letter-spacing: -0.2px;
+    }
+
+    .brand-sub {
+      font-size: 11px;
+      color: rgba(255, 255, 255, 0.5);
+      font-weight: 500;
       letter-spacing: 0.2px;
     }
   }
 
-  .navbar-toggler {
-    border: 2px solid rgba(74, 222, 128, 0.5);
-    border-radius: 8px;
-    padding: 7px 11px;
-    background: transparent;
+  // --- Right ---
+  .header-right {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+  }
 
-    &:focus {
-      box-shadow: 0 0 0 3px rgba(74, 222, 128, 0.3);
+  .insta-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    background: linear-gradient(135deg, #833ab4, #fd1d1d, #fcb045);
+    color: #ffffff;
+    text-decoration: none;
+    padding: 7px 15px;
+    border-radius: 100px;
+    font-size: 13px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+
+    i { font-size: 16px; }
+
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 16px rgba(253, 29, 29, 0.45);
+      color: #ffffff;
     }
 
-    .toggler-icon {
-      display: flex;
-      flex-direction: column;
-      gap: 5px;
-
-      span {
-        display: block;
-        width: 22px;
-        height: 2px;
-        background: #4ade80;
-        border-radius: 2px;
-        transition: all 0.3s ease;
-      }
+    .insta-label {
+      @media (max-width: 560px) { display: none; }
     }
   }
 
-  .nav-link {
-    color: rgba(255, 255, 255, 0.82) !important;
-    font-weight: 500;
-    padding: 8px 16px;
-    border-radius: 8px;
-    font-size: 15px;
-    transition: all 0.25s ease;
+  .status-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(74, 222, 128, 0.12);
+    border: 1px solid rgba(74, 222, 128, 0.3);
+    color: #4ade80;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 6px 12px;
+    border-radius: 100px;
+    white-space: nowrap;
 
     i {
-      color: #4ade80;
-      margin-right: 4px;
+      font-size: 8px;
+      animation: pulse 2s ease-in-out infinite;
     }
+  }
 
-    &:hover {
-      color: #ffffff !important;
-      background: rgba(74, 222, 128, 0.15);
-      transform: translateY(-1px);
-    }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+  }
+
+  @media (max-width: 480px) {
+    .status-chip { display: none; }
   }
 }
