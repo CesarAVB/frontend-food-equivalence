@@ -10,6 +10,7 @@ import { EquivalenciaResponse } from '../models/equivalencia-response';
 // ====================================================
 export interface AlimentoLista {
   id: number;
+  codigoTaco?: string;
   descricao: string;
   grupo: string;
   energiaKcal: number;
@@ -47,9 +48,9 @@ export class EquivalenciaService {
   // Métodos - Listar Alimentos por Grupo
   // ====================================================
   listarAlimentosPorGrupo(grupo: string): Observable<AlimentoLista[]> {
-    const grupoEnum = this.converterGrupoParaEnum(grupo);
+    const grupoEncoded = encodeURIComponent(grupo);
     return this.http.get<AlimentoLista[]>(
-      `${this.apiUrl}/alimentos/grupo/${grupoEnum}`
+      `${this.apiUrl}/alimentos/grupo/${grupoEncoded}`
     );
   }
 
@@ -66,7 +67,6 @@ export class EquivalenciaService {
   // ====================================================
   // Métodos Privados - Converter Grupo para Formato Enum
   // ====================================================
-  private converterGrupoParaEnum(grupo: string): string {
-    return grupo.toUpperCase().replace(/ /g, '_');
-  }
+  // Nota: o backend espera o nome do grupo conforme apresentado (ex: "Carboidratos", "Gordura Vegetal").
+  // Portanto não convertemos para enum; apenas fazemos encodeURIComponent para segurança na URL.
 }
