@@ -273,6 +273,18 @@
       }
     }
 
+    .th-button {
+      all: unset;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-weight: 700;
+      color: #7a9e96;
+    }
+
+    .sort-indicator { color: #1a5f7a; font-size: 12px; margin-left: 4px; }
+
     tbody {
       tr {
         border-bottom: 1px solid #f0f7f5;
@@ -281,10 +293,7 @@
         &:hover { background: #f8fffd; }
         &:last-child { border-bottom: none; }
 
-        &.row-highlight {
-          background: #f0fdf4;
-          &:hover { background: #e6faf0; }
-        }
+        /* Removido destaque condicional por diferença percentual */
 
         td {
           padding: 12px 14px;
@@ -297,11 +306,7 @@
         color: #1e2d2a;
         font-weight: 500;
 
-        .best-badge {
-          color: #f59e0b;
-          font-size: 12px;
-          margin-right: 5px;
-        }
+        /* Estrela de melhor correspondência removida */
       }
 
       // Removidas as colunas de kcal, diferença e ação — estilos correspondentes eliminados

@@ -13,7 +13,9 @@ import { FormsModule } from '@angular/forms';
 export class ResultadoComponent {
 
   @Input() dados: EquivalenciaResponse | null = null;
-  ordenarPor: 'quantidade' | 'diferenca' | 'alfabetica' = 'alfabetica';
+  // Ordenação controlada por coluna: 'descricao' (Alimento) ou 'quantidade' (Qtd g)
+  sortField: 'descricao' | 'quantidade' = 'descricao';
+  sortAsc = true; // true = asc, false = desc
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['dados'] && this.dados) {
@@ -26,12 +28,10 @@ export class ResultadoComponent {
 
     const equivalentes = [...this.dados.equivalentes];
 
-    if (this.ordenarPor === 'quantidade') {
-      equivalentes.sort((a, b) => a.quantidadeEquivalenteG - b.quantidadeEquivalenteG);
-    } else if (this.ordenarPor === 'diferenca') {
-      equivalentes.sort((a, b) => a.diferencaPercentual - b.diferencaPercentual);
+    if (this.sortField === 'quantidade') {
+      equivalentes.sort((a, b) => (a.quantidadeEquivalenteG - b.quantidadeEquivalenteG) * (this.sortAsc ? 1 : -1));
     } else {
-      equivalentes.sort((a, b) => a.descricao.localeCompare(b.descricao, 'pt', { sensitivity: 'base' }));
+      equivalentes.sort((a, b) => a.descricao.localeCompare(b.descricao, 'pt', { sensitivity: 'base' }) * (this.sortAsc ? 1 : -1));
     }
     
     return equivalentes;
@@ -39,6 +39,15 @@ export class ResultadoComponent {
 
   ordenarResultados(): void {
     // Trigger change detection
+  }
+
+  toggleSort(field: 'descricao' | 'quantidade') {
+    if (this.sortField === field) {
+      this.sortAsc = !this.sortAsc;
+    } else {
+      this.sortField = field;
+      this.sortAsc = true;
+    }
   }
 
   exportarCSV(): void {

@@ -83,19 +83,24 @@
       <table class="equiv-table">
         <thead>
           <tr>
-            <th><i class="fas fa-apple-alt"></i>Alimento</th>
-            <th class="text-center"><i class="fas fa-weight"></i>Qtd (g)</th>
+            <th>
+              <button class="th-button" (click)="toggleSort('descricao')" aria-label="Ordenar por Alimento">
+                <i class="fas fa-apple-alt"></i>Alimento
+                <span class="sort-indicator">{{ sortField === 'descricao' ? (sortAsc ? ' ▲' : ' ▼') : '' }}</span>
+              </button>
+            </th>
+            <th class="text-center">
+              <button class="th-button" (click)="toggleSort('quantidade')" aria-label="Ordenar por Quantidade">
+                <i class="fas fa-weight"></i>Qtd
+                <span class="sort-indicator">{{ sortField === 'quantidade' ? (sortAsc ? ' ▲' : ' ▼') : '' }}</span>
+              </button>
+            </th>
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let equiv of obterEquivalentes()" [class.row-highlight]="equiv.diferencaPercentual < 1">
-            <td class="food-name">
-              <span *ngIf="equiv.diferencaPercentual < 1" class="best-badge" title="Melhor correspondência">
-                <i class="fas fa-star"></i>
-              </span>
-              {{ equiv.descricao }}
-            </td>
-            <td class="text-center fw-bold">{{ equiv.quantidadeEquivalenteG | number: '1.1-1' }}</td>
+          <tr *ngFor="let equiv of obterEquivalentes()">
+            <td class="food-name">{{ equiv.descricao }}</td>
+            <td class="text-center fw-bold">{{ equiv.quantidadeEquivalenteG | number: '1.0-0' }} g</td>
           </tr>
         </tbody>
       </table>
