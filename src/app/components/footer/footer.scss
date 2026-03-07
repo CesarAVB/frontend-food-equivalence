@@ -9,5 +9,17 @@
     font-size: 13px;
     color: rgba(255, 255, 255, 0.55);
     margin: 0;
+    .footer-author {
+      color: #a7f3d0; /* soft green */
+      text-decoration: none;
+      font-weight: 700;
+      margin: 0 6px;
+      transition: color 0.18s ease;
+    }
+
+    .footer-author:hover {
+      color: #ffffff;
+      text-decoration: none;
+    }
   }
 }
