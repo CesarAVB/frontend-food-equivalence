@@ -16,7 +16,7 @@ export class EquivalenciaService {
 
   calcularEquivalencias(request: CalcularEquivalenciasRequest): Observable<EquivalenciaResponse> {
     return this.http.post<EquivalenciaResponse>(
-      `${this.apiUrl}/calcular`,
+      `${this.apiUrl}/equivalencias`,
       request
     );
   }
