@@ -194,7 +194,9 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+    position: relative; /* necessário para centralização absoluta do título */
     margin-bottom: 18px;
+    margin-top: 14px; /* espaçamento superior para separar do bloco de grupo */
     flex-wrap: wrap;
     gap: 12px;
 
@@ -203,19 +205,26 @@
       font-weight: 700;
       color: #1a5f7a;
       margin: 0;
-      display: flex;
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 1;
+      display: inline-flex; /* shrinkwrap para centralizar ícone + texto */
       align-items: center;
       gap: 8px;
+      width: auto;
+      white-space: nowrap;
 
       i { color: #b4d21a; }
 
       .count-badge {
         background: #e8f4f0;
-        color: #1a5f7a;
+        /* centralizar horizontalmente o título dentro do container de controles */
         font-size: 11px;
         padding: 2px 9px;
         border-radius: 100px;
         font-weight: 700;
+        margin-left: 8px; /* garantir separação e evitar auto-margens */
       }
     }
 
@@ -359,6 +368,7 @@
     }
 
     .res-stats {
+      grid-template-columns: 1fr; /* empilha os cards em uma coluna */
       .stat-card {
         padding: 10px 12px;
 
@@ -366,7 +376,11 @@
 
         .stat-info {
           .stat-label { font-size: 10px; }
-          .stat-value { font-size: 13px; }
+          .stat-value {
+            font-size: 13px;
+            white-space: normal; /* permitir quebra de linha */
+            overflow-wrap: anywhere;
+          }
         }
       }
     }
