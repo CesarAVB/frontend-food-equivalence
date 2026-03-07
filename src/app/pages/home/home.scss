@@ -12,6 +12,7 @@
   gap: 0;
   border-radius: 24px;
   margin-bottom: 44px;
+  margin-top: 0; // default
   overflow: hidden;
   box-shadow: 0 8px 40px rgba(13, 61, 82, 0.18);
   min-height: 280px;
@@ -136,6 +137,9 @@
 
   @media (max-width: 768px) {
     grid-template-columns: 1fr;
+
+    // espaço extra entre header sticky e o card hero em telas pequenas
+    margin-top: 18px;
 
     .hero-right { display: none; }
 
