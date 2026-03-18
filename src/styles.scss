@@ -83,6 +83,40 @@ a {
   text-decoration: none;
   transition: color 0.3s ease;
 
+  
+  /* Toasts simples para notificações */
+  .app-toasts {
+    position: fixed;
+    right: 16px;
+    bottom: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    z-index: 1200;
+  }
+
+  .app-toast {
+    min-width: 200px;
+    max-width: 340px;
+    padding: 10px 14px;
+    border-radius: 8px;
+    color: #fff;
+    background: rgba(0, 0, 0, 0.75);
+    opacity: 0;
+    transform: translateY(6px);
+    transition: opacity 0.18s ease, transform 0.18s ease;
+    box-shadow: var(--shadow-md);
+    font-weight: 600;
+  }
+
+  .app-toast.show {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .app-toast--success { background: var(--clr-success); }
+  .app-toast--info { background: var(--clr-primary); }
+  .app-toast--error { background: #dc3545; }
   &:hover {
     color: var(--clr-accent-dark);
   }

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { AuthService, Usuario } from '../../services/auth.service';
@@ -6,17 +6,16 @@ import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-header',
-  standalone: true,
   imports: [CommonModule, RouterModule],
   templateUrl: './header.html',
-  styleUrls: ['./header.scss']
+  styleUrls: ['./header.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class HeaderComponent {
-  usuario$: Observable<Usuario | null>;
+  private readonly auth = inject(AuthService);
+  usuario$: Observable<Usuario | null> = this.auth.usuario$;
 
-  constructor(private auth: AuthService) {
-    this.usuario$ = this.auth.usuario$;
-  }
+  constructor() {}
 
   iniciais(nome: string): string {
     return nome

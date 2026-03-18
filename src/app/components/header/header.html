@@ -11,18 +11,23 @@
       <div class="header-right">
 
         @if (usuario$ | async; as usuario) {
-          <!-- Usuário logado -->
-          <div class="user-chip">
-            <span class="user-avatar" [title]="usuario.email">
-              {{ iniciais(usuario.nome) }}
-            </span>
-            <span class="user-nome">{{ usuario.nome }}</span>
-          </div>
+          <!-- Sessão do usuário -->
+          <div class="account-panel">
+            <div class="user-chip" [title]="usuario.email">
+              <span class="user-avatar">
+                {{ iniciais(usuario.nome) }}
+              </span>
+              <div class="user-meta">
+                <span class="user-nome">{{ usuario.nome }}</span>
+                <span class="user-email">{{ usuario.email }}</span>
+              </div>
+            </div>
 
-          <button class="logout-btn" (click)="logout()" title="Sair da conta">
-            <i class="fas fa-sign-out-alt"></i>
-            <span class="logout-label">Sair</span>
-          </button>
+            <button class="logout-btn" (click)="logout()" title="Sair da conta">
+              <i class="fas fa-sign-out-alt"></i>
+              <span class="logout-label">Sair</span>
+            </button>
+          </div>
         }
 
         <a

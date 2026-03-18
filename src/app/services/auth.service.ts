@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { Router } from '@angular/router';
+import { NotificationService } from './notification.service';
 
 export interface Usuario {
   nome: string;
@@ -14,7 +15,7 @@ export class AuthService {
   private usuarioSubject = new BehaviorSubject<Usuario | null>(this.carregarDoStorage());
   usuario$ = this.usuarioSubject.asObservable();
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private notifier: NotificationService) {}
 
   get usuarioAtual(): Usuario | null {
     return this.usuarioSubject.value;
@@ -29,12 +30,14 @@ export class AuthService {
     this.usuarioSubject.next(usuario);
     // Redireciona para a dashboard após login bem-sucedido
     this.router.navigate(['/home']);
+    this.notifier.success('Login realizado com sucesso');
   }
 
   logout(): void {
     sessionStorage.removeItem(this.STORAGE_KEY);
     this.usuarioSubject.next(null);
     this.router.navigate(['/login']);
+    this.notifier.info('Você saiu da sessão');
   }
 
   private carregarDoStorage(): Usuario | null {
