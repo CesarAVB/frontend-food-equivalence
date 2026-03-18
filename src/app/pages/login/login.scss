@@ -362,6 +362,7 @@
 .forgot-row {
   display: flex;
   justify-content: flex-end;
+  margin-bottom: 12px; /* espaço entre o link 'Esqueceu sua senha?' e o botão */
 
   .forgot-link {
     font-size: 0.83rem;
