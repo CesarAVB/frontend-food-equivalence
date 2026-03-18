@@ -3,9 +3,11 @@
     <div class="header-inner">
 
       <!-- Brand -->
-      <a class="brand" href="/">
-        <img src="images/logo-reduzido.png" alt="Lista de Substituição - André Reis" class="brand-logo">
-      </a>
+      <div class="brand-cluster">
+        <a class="brand" href="/">
+          <img src="images/logo-reduzido.png" alt="Lista de Substituição - André Reis" class="brand-logo">
+        </a>
+      </div>
 
       <!-- Right side -->
       <div class="header-right">
@@ -22,6 +24,11 @@
                 <span class="user-email">{{ usuario.email }}</span>
               </div>
             </div>
+
+            <span class="session-badge" aria-label="Sessão ativa">
+              <i class="fas fa-circle"></i>
+              Online
+            </span>
 
             <button class="logout-btn" (click)="logout()" title="Sair da conta">
               <i class="fas fa-sign-out-alt"></i>

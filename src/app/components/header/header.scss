@@ -1,46 +1,52 @@
 .site-header {
-  background: linear-gradient(180deg, rgba(248, 253, 251, 0.95) 0%, rgba(240, 248, 245, 0.95) 100%);
-  border-bottom: 1px solid rgba(26, 95, 122, 0.14);
-  box-shadow: 0 6px 22px rgba(26, 95, 122, 0.08);
+  background:
+    radial-gradient(ellipse 320px 140px at 8% 10%, rgba(42, 122, 154, 0.16), transparent 72%),
+    radial-gradient(ellipse 300px 140px at 80% 90%, rgba(180, 210, 26, 0.14), transparent 72%),
+    linear-gradient(105deg, #f7fcfa 0%, #e7f5ef 45%, #f3fbf7 100%);
+  border-bottom: 2px solid rgba(26, 95, 122, 0.18);
+  box-shadow: 0 8px 26px rgba(26, 95, 122, 0.09);
   backdrop-filter: blur(8px);
   position: sticky;
   top: 0;
   z-index: 1000;
-  padding: 8px 0;
-
-  &::after {
-    content: '';
-    display: block;
-    height: 2px;
-    background: linear-gradient(90deg, transparent 0%, #22c55e 20%, #34d399 80%, transparent 100%);
-    opacity: 0.55;
-  }
+  padding: 10px 0;
 
   .header-inner {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 16px;
-    min-height: 62px;
+    gap: 14px;
+    min-height: 64px;
+  }
+
+  .brand-cluster {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 0;
   }
 
   // --- Brand ---
   .brand {
     display: inline-flex;
     align-items: center;
+    gap: 0;
     text-decoration: none;
     flex-shrink: 0;
-    padding: 2px 8px;
-    border-radius: 14px;
-    transition: transform 0.2s ease, background-color 0.2s ease;
+    padding: 8px 12px;
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.72);
+    border: 1px solid rgba(26, 95, 122, 0.1);
+    transition: transform 0.2s ease, background-color 0.2s ease, border-color 0.2s ease;
 
     &:hover {
       transform: translateY(-1px);
-      background: rgba(255, 255, 255, 0.72);
+      background: rgba(255, 255, 255, 0.9);
+      border-color: rgba(26, 95, 122, 0.2);
     }
 
     .brand-logo {
-      height: 50px;
+      height: 46px;
       width: auto;
       display: block;
       object-fit: contain;
@@ -51,7 +57,7 @@
   .header-right {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 8px;
     flex-wrap: wrap;
     justify-content: flex-end;
   }
@@ -61,11 +67,11 @@
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    background: rgba(255, 255, 255, 0.88);
+    background: rgba(255, 255, 255, 0.92);
     border: 1px solid rgba(26, 95, 122, 0.14);
     border-radius: 999px;
-    padding: 4px;
-    box-shadow: 0 4px 14px rgba(26, 95, 122, 0.1);
+    padding: 5px;
+    box-shadow: 0 5px 16px rgba(26, 95, 122, 0.11);
   }
 
   .user-chip {
@@ -149,6 +155,25 @@
     }
   }
 
+  .session-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 11px;
+    font-weight: 700;
+    color: #166534;
+    background: #ecfdf3;
+    border: 1px solid #bbf7d0;
+    border-radius: 999px;
+    padding: 6px 10px;
+    white-space: nowrap;
+
+    i {
+      font-size: 8px;
+      color: #16a34a;
+    }
+  }
+
   .brand:focus-visible,
   .logout-btn:focus-visible {
     outline: 3px solid rgba(26, 95, 122, 0.24);
@@ -157,14 +182,17 @@
 
   @media (max-width: 860px) {
     .header-inner { gap: 10px; }
-    .brand .brand-logo { height: 44px; }
+    .brand-cluster { gap: 6px; }
+    .brand .brand-logo { height: 40px; }
     .user-email { display: none; }
+    .session-badge { display: none; }
     .account-panel { gap: 6px; }
   }
 
   @media (max-width: 560px) {
     .header-right { gap: 8px; }
-    .brand { padding-left: 0; }
+    .brand-cluster { gap: 6px; }
+    .brand { padding: 6px 8px; }
     .user-nome { max-width: 92px; }
     .logout-label { display: none; }
     .user-chip { padding: 4px 6px 4px 4px; max-width: 126px; }
