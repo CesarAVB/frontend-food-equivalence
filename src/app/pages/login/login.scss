@@ -2,8 +2,81 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: calc(100vh - 120px); // descontando header e footer
+  min-height: 100vh;
   padding: 24px 16px;
+  position: relative;
+  overflow: hidden;
+
+  // Gradiente base com tons naturais
+  background:
+    radial-gradient(ellipse 700px 500px at 8% 15%,  rgba(26, 95, 122, 0.13) 0%, transparent 65%),
+    radial-gradient(ellipse 600px 400px at 92% 85%, rgba(180, 210, 26, 0.11) 0%, transparent 65%),
+    radial-gradient(ellipse 400px 300px at 55% 5%,  rgba(42, 122, 154, 0.07) 0%, transparent 60%),
+    radial-gradient(ellipse 350px 250px at 20% 90%, rgba(180, 210, 26, 0.07) 0%, transparent 60%),
+    linear-gradient(155deg, #ddf0e8 0%, #f0f8f5 45%, #e8f5ee 100%);
+
+  // Blob teal — canto superior esquerdo
+  &::before {
+    content: '';
+    position: absolute;
+    width: 520px;
+    height: 520px;
+    border-radius: 62% 38% 72% 28% / 48% 64% 36% 52%;
+    background: rgba(26, 95, 122, 0.08);
+    top: -160px;
+    left: -160px;
+    animation: morph-blob 14s ease-in-out infinite;
+    pointer-events: none;
+  }
+
+  // Blob lime — canto inferior direito
+  &::after {
+    content: '';
+    position: absolute;
+    width: 420px;
+    height: 420px;
+    border-radius: 42% 58% 32% 68% / 58% 42% 62% 38%;
+    background: rgba(180, 210, 26, 0.09);
+    bottom: -120px;
+    right: -120px;
+    animation: morph-blob 18s ease-in-out infinite reverse;
+    pointer-events: none;
+  }
+}
+
+// ─── Ícones flutuantes de fundo ────────────────────────────────────────────────
+.bg-floaters {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.floater {
+  position: absolute;
+  color: rgba(26, 95, 122, 0.07);
+  animation: float-icon ease-in-out infinite;
+
+  &--1 { font-size: 88px;  top: 6%;   left: 4%;   animation-duration: 18s; }
+  &--2 { font-size: 64px;  top: 12%;  right: 6%;  animation-duration: 22s; animation-delay: -5s; }
+  &--3 { font-size: 52px;  bottom: 18%; left: 2%;  animation-duration: 20s; animation-delay: -9s; }
+  &--4 { font-size: 76px;  bottom: 8%;  right: 4%; animation-duration: 25s; animation-delay: -3s; color: rgba(180, 210, 26, 0.09); }
+  &--5 { font-size: 48px;  top: 48%;  left: 1%;   animation-duration: 16s; animation-delay: -13s; }
+  &--6 { font-size: 58px;  top: 62%;  right: 2%;  animation-duration: 19s; animation-delay: -7s; color: rgba(180, 210, 26, 0.07); }
+  &--7 { font-size: 40px;  top: 30%;  right: 10%; animation-duration: 23s; animation-delay: -11s; }
+  &--8 { font-size: 44px;  bottom: 38%; left: 8%; animation-duration: 17s; animation-delay: -4s; color: rgba(180, 210, 26, 0.08); }
+}
+
+@keyframes float-icon {
+  0%, 100% { transform: translateY(0)    rotate(0deg);  }
+  30%       { transform: translateY(-18px) rotate(6deg);  }
+  60%       { transform: translateY(-9px)  rotate(-4deg); }
+}
+
+@keyframes morph-blob {
+  0%, 100% { border-radius: 62% 38% 72% 28% / 48% 64% 36% 52%; transform: translate(0, 0); }
+  33%       { border-radius: 45% 55% 50% 50% / 55% 45% 55% 45%; transform: translate(15px, -15px); }
+  66%       { border-radius: 70% 30% 40% 60% / 35% 65% 35% 65%; transform: translate(-10px, 10px); }
 }
 
 // ─── Card principal ────────────────────────────────────────────────────────────
@@ -15,6 +88,8 @@
   border-radius: var(--radius-lg);
   overflow: hidden;
   box-shadow: var(--shadow-lg);
+  position: relative;
+  z-index: 1;
 }
 
 // ─── Painéis ───────────────────────────────────────────────────────────────────
@@ -359,8 +434,8 @@
 @media (max-width: 768px) {
   .login-page {
     padding: 16px 12px;
-    min-height: calc(100vh - 100px);
-    align-items: flex-start;
+    min-height: 100vh;
+    align-items: center;
   }
 
   .login-card {

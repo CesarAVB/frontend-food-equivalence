@@ -1,9 +1,13 @@
 <div class="app-wrapper">
-  <app-header></app-header>
+  @if (exibirLayout) {
+    <app-header></app-header>
+  }
 
-  <main class="container-fluid">
+  <main [class.container-fluid]="exibirLayout" [style.padding]="exibirLayout ? null : '0'">
     <router-outlet></router-outlet>
   </main>
 
-  <app-footer></app-footer>
+  @if (exibirLayout) {
+    <app-footer></app-footer>
+  }
 </div>

@@ -9,6 +9,22 @@
 
       <!-- Right side -->
       <div class="header-right">
+
+        @if (usuario$ | async; as usuario) {
+          <!-- Usuário logado -->
+          <div class="user-chip">
+            <span class="user-avatar" [title]="usuario.email">
+              {{ iniciais(usuario.nome) }}
+            </span>
+            <span class="user-nome">{{ usuario.nome }}</span>
+          </div>
+
+          <button class="logout-btn" (click)="logout()" title="Sair da conta">
+            <i class="fas fa-sign-out-alt"></i>
+            <span class="logout-label">Sair</span>
+          </button>
+        }
+
         <a
           href="https://www.instagram.com/personalnutri.andrereis"
           target="_blank"

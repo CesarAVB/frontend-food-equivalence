@@ -1,4 +1,17 @@
 <div class="login-page">
+
+  <!-- Ícones decorativos de fundo -->
+  <div class="bg-floaters" aria-hidden="true">
+    <i class="fas fa-apple-alt floater floater--1"></i>
+    <i class="fas fa-carrot floater floater--2"></i>
+    <i class="fas fa-leaf floater floater--3"></i>
+    <i class="fas fa-seedling floater floater--4"></i>
+    <i class="fas fa-lemon floater floater--5"></i>
+    <i class="fas fa-pepper-hot floater floater--6"></i>
+    <i class="fas fa-apple-alt floater floater--7"></i>
+    <i class="fas fa-leaf floater floater--8"></i>
+  </div>
+
   <div class="login-card">
 
     <!-- Painel esquerdo: visual nutricional -->
@@ -45,7 +58,7 @@
     <div class="login-panel login-panel--form">
       <div class="form-container">
 
-        <!-- Logo mobile (visível apenas em telas pequenas) -->
+        <!-- Logo mobile -->
         <div class="mobile-logo">
           <img src="images/logo-reduzido.png" alt="André Reis Nutricionista" class="mobile-logo-img">
         </div>
@@ -55,7 +68,13 @@
           <p class="form-subtitle">Informe suas credenciais para acessar o sistema</p>
         </div>
 
-        <!-- Mensagem de erro -->
+        <!-- Erro de submissão -->
+        @if (submitted && loginForm.invalid) {
+          <div class="alert alert-danger d-flex align-items-center gap-2" role="alert">
+            <i class="fas fa-exclamation-circle"></i>
+            <span>Preencha todos os campos corretamente.</span>
+          </div>
+        }
         @if (errorMessage) {
           <div class="alert alert-danger d-flex align-items-center gap-2" role="alert">
             <i class="fas fa-exclamation-circle"></i>
@@ -76,21 +95,12 @@
                 id="email"
                 type="email"
                 class="form-control"
-                [class.is-invalid]="email?.invalid && email?.touched"
+                [class.is-invalid]="submitted && email?.invalid"
                 formControlName="email"
                 placeholder="seu@email.com"
                 autocomplete="email"
               >
             </div>
-            @if (email?.invalid && email?.touched) {
-              <div class="field-error">
-                @if (email?.errors?.['required']) {
-                  <i class="fas fa-circle-exclamation"></i> O e-mail é obrigatório.
-                } @else if (email?.errors?.['email']) {
-                  <i class="fas fa-circle-exclamation"></i> Informe um e-mail válido.
-                }
-              </div>
-            }
           </div>
 
           <!-- Campo Senha -->
@@ -104,7 +114,7 @@
                 id="senha"
                 [type]="showPassword ? 'text' : 'password'"
                 class="form-control"
-                [class.is-invalid]="senha?.invalid && senha?.touched"
+                [class.is-invalid]="submitted && senha?.invalid"
                 formControlName="senha"
                 placeholder="Sua senha"
                 autocomplete="current-password"
@@ -119,15 +129,6 @@
                 <i [class]="showPassword ? 'fas fa-eye-slash' : 'fas fa-eye'"></i>
               </button>
             </div>
-            @if (senha?.invalid && senha?.touched) {
-              <div class="field-error">
-                @if (senha?.errors?.['required']) {
-                  <i class="fas fa-circle-exclamation"></i> A senha é obrigatória.
-                } @else if (senha?.errors?.['minlength']) {
-                  <i class="fas fa-circle-exclamation"></i> A senha deve ter pelo menos 6 caracteres.
-                }
-              </div>
-            }
           </div>
 
           <!-- Esqueceu a senha -->
@@ -136,11 +137,7 @@
           </div>
 
           <!-- Botão de envio -->
-          <button
-            type="submit"
-            class="btn btn-login"
-            [disabled]="isLoading"
-          >
+          <button type="submit" class="btn btn-login" [disabled]="isLoading">
             @if (isLoading) {
               <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
               Entrando...
@@ -155,7 +152,7 @@
         <div class="form-footer">
           <p>
             <i class="fas fa-shield-alt footer-icon"></i>
-            Acesso restrito a profissionais cadastrados
+            Acesso restrito a pacientes e profissionais cadastrados
           </p>
         </div>
 

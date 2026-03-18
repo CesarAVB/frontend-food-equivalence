@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { RouterModule } from '@angular/router';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -14,9 +15,10 @@ export class LoginComponent {
   loginForm: FormGroup;
   showPassword = false;
   isLoading = false;
+  submitted = false;
   errorMessage = '';
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private auth: AuthService) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       senha: ['', [Validators.required, Validators.minLength(6)]]
@@ -28,17 +30,24 @@ export class LoginComponent {
   }
 
   onSubmit(): void {
+    this.submitted = true;
+    this.errorMessage = '';
+
     if (this.loginForm.invalid) {
-      this.loginForm.markAllAsTouched();
       return;
     }
+
     this.isLoading = true;
-    this.errorMessage = '';
-    // TODO: integrar com serviço de autenticação
+
+    // TODO: substituir pela chamada real à API de autenticação
     setTimeout(() => {
       this.isLoading = false;
-      this.errorMessage = 'Funcionalidade de autenticação em desenvolvimento.';
-    }, 1500);
+      const email: string = this.loginForm.value.email;
+      const nome = email.split('@')[0]
+        .replace(/[._-]/g, ' ')
+        .replace(/\b\w/g, c => c.toUpperCase());
+      this.auth.login({ nome, email });
+    }, 1000);
   }
 
   get email() { return this.loginForm.get('email'); }
