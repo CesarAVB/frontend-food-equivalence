@@ -354,13 +354,14 @@
   i { font-size: 0.9rem; }
 }
 
-.field-error {
+.field-error,
+.field-error-msg {
   font-size: 0.8rem;
   color: #dc3545;
   display: flex;
   align-items: center;
   gap: 5px;
-  margin-top: 2px;
+  margin-top: 4px;
 }
 
 // ─── Link esqueceu senha ───────────────────────────────────────────────────────

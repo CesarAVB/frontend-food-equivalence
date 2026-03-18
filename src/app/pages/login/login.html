@@ -68,13 +68,7 @@
           <p class="form-subtitle">Informe suas credenciais para acessar o sistema</p>
         </div>
 
-        <!-- Erro de submissão -->
-        @if (submitted && loginForm.invalid) {
-          <div class="alert alert-danger d-flex align-items-center gap-2" role="alert">
-            <i class="fas fa-exclamation-circle"></i>
-            <span>Preencha todos os campos corretamente.</span>
-          </div>
-        }
+        <!-- Erro da API -->
         @if (errorMessage) {
           <div class="alert alert-danger d-flex align-items-center gap-2" role="alert">
             <i class="fas fa-exclamation-circle"></i>
@@ -101,6 +95,16 @@
                 autocomplete="email"
               >
             </div>
+            @if (submitted && email?.errors?.['required']) {
+              <div class="field-error-msg">
+                <i class="fas fa-exclamation-triangle"></i> E-mail é obrigatório.
+              </div>
+            }
+            @if (submitted && email?.errors?.['email']) {
+              <div class="field-error-msg">
+                <i class="fas fa-exclamation-triangle"></i> Informe um e-mail válido.
+              </div>
+            }
           </div>
 
           <!-- Campo Senha -->
@@ -129,6 +133,16 @@
                 <i [class]="showPassword ? 'fas fa-eye-slash' : 'fas fa-eye'"></i>
               </button>
             </div>
+            @if (submitted && senha?.errors?.['required']) {
+              <div class="field-error-msg">
+                <i class="fas fa-exclamation-triangle"></i> Senha é obrigatória.
+              </div>
+            }
+            @if (submitted && senha?.errors?.['minlength']) {
+              <div class="field-error-msg">
+                <i class="fas fa-exclamation-triangle"></i> A senha deve ter no mínimo 6 caracteres.
+              </div>
+            }
           </div>
 
           <!-- Esqueceu a senha -->
