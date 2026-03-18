@@ -1,0 +1,102 @@
+<div class="planos-page">
+
+  <!-- Hero -->
+  <div class="planos-hero">
+    <div class="container">
+      <h1 class="hero-title">Escolha seu plano</h1>
+      <p class="hero-sub">Acesse as ferramentas certas para o seu acompanhamento nutricional.</p>
+
+      @if (planoAtual !== 'FREE') {
+        <div class="plano-ativo-info">
+          <i class="fas fa-check-circle"></i>
+          Seu plano atual: <strong>{{ planoAtual }}</strong>
+          <button class="btn-portal" (click)="gerenciarAssinatura()" [disabled]="carregandoPortal">
+            @if (carregandoPortal) {
+              <span class="spinner-border spinner-border-sm me-1"></span>
+            } @else {
+              <i class="fas fa-external-link-alt me-1"></i>
+            }
+            Gerenciar assinatura
+          </button>
+        </div>
+      }
+    </div>
+  </div>
+
+  <!-- Cards -->
+  <div class="container planos-container">
+    <div class="planos-grid">
+
+      @for (plano of planos; track plano.id) {
+        <div class="plano-card" [class.plano-destaque]="plano.destaque" [class]="plano.cor + ' ' + (plano.destaque ? 'plano-destaque' : '')">
+
+          @if (plano.destaque) {
+            <div class="badge-popular">
+              <i class="fas fa-star"></i> Mais popular
+            </div>
+          }
+
+          @if (isPlanoAtual(plano.id)) {
+            <div class="badge-ativo">
+              <i class="fas fa-check"></i> Plano atual
+            </div>
+          }
+
+          <div class="plano-header">
+            <h3 class="plano-nome">{{ plano.nome }}</h3>
+            <div class="plano-preco">
+              <span class="preco-valor">{{ plano.preco }}</span>
+              <span class="preco-periodo">{{ plano.periodo }}</span>
+            </div>
+            <p class="plano-descricao">{{ plano.descricao }}</p>
+          </div>
+
+          <ul class="plano-recursos">
+            @for (recurso of plano.recursos; track recurso) {
+              <li>
+                <i class="fas fa-check-circle"></i>
+                {{ recurso }}
+              </li>
+            }
+          </ul>
+
+          <div class="plano-footer">
+            @if (isPlanoAtual(plano.id)) {
+              <button class="btn-plano btn-plano--ativo" disabled>
+                <i class="fas fa-check me-1"></i>Plano atual
+              </button>
+            } @else if (plano.id === 'FREE') {
+              <button class="btn-plano btn-plano--free" disabled>
+                Gratuito
+              </button>
+            } @else {
+              <button
+                class="btn-plano"
+                [class.btn-plano--destaque]="plano.destaque"
+                [class.btn-plano--padrao]="!plano.destaque"
+                (click)="assinar(plano.id)"
+                [disabled]="carregandoCheckout !== null">
+                @if (carregandoCheckout === plano.id) {
+                  <span class="spinner-border spinner-border-sm me-1"></span>
+                  Redirecionando...
+                } @else {
+                  <i class="fas fa-bolt me-1"></i>
+                  Assinar {{ plano.nome }}
+                }
+              </button>
+            }
+          </div>
+
+        </div>
+      }
+
+    </div>
+
+    <!-- Nota -->
+    <p class="planos-nota">
+      <i class="fas fa-lock me-1"></i>
+      Pagamento seguro via Stripe. Cancele a qualquer momento sem multa.
+    </p>
+  </div>
+
+</div>

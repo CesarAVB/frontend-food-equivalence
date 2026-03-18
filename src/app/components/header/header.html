@@ -38,11 +38,24 @@
               <span>Usuários</span>
             </a>
           }
+
+          <a routerLink="/planos" routerLinkActive="active" class="nav-link-item">
+            <i class="fas fa-layer-group"></i>
+            <span>Planos</span>
+          </a>
         </nav>
 
         <!-- Right side -->
         <div class="header-right">
           <div class="account-panel">
+
+            <!-- Badge do plano -->
+            <a routerLink="/planos" class="plano-badge" [class]="'plano-badge--' + (usuario.plano ?? 'free' | lowercase)"
+               title="Ver planos">
+              <i class="fas fa-bolt"></i>
+              {{ usuario.plano ?? 'FREE' }}
+            </a>
+
             <div class="user-chip" [title]="usuario.email">
               <span class="user-avatar">
                 {{ iniciais(usuario.nome) }}

@@ -1,0 +1,268 @@
+// ─── Hero ──────────────────────────────────────────────────────────────────
+.planos-page {
+  min-height: calc(100vh - 140px);
+  background: #f4fbf8;
+}
+
+.planos-hero {
+  background: linear-gradient(135deg, #0d3d52 0%, #1a5f7a 60%, #2a7a9a 100%);
+  padding: 64px 0 80px;
+  text-align: center;
+  position: relative;
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    right: 0;
+    height: 40px;
+    background: #f4fbf8;
+    clip-path: ellipse(55% 100% at 50% 100%);
+  }
+}
+
+.hero-title {
+  color: #fff;
+  font-size: clamp(28px, 5vw, 44px);
+  font-weight: 800;
+  margin-bottom: 12px;
+  letter-spacing: -0.5px;
+}
+
+.hero-sub {
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 17px;
+  margin-bottom: 0;
+}
+
+.plano-ativo-info {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 22px;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 999px;
+  padding: 10px 20px;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  flex-wrap: wrap;
+  justify-content: center;
+
+  i { color: #4ade80; }
+
+  .btn-portal {
+    background: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: #fff;
+    border-radius: 999px;
+    padding: 5px 14px;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.2s;
+
+    &:hover { background: rgba(255, 255, 255, 0.25); }
+    &:disabled { opacity: 0.6; cursor: not-allowed; }
+  }
+}
+
+// ─── Cards ─────────────────────────────────────────────────────────────────
+.planos-container {
+  padding-top: 40px;
+  padding-bottom: 60px;
+}
+
+.planos-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 24px;
+  align-items: start;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.plano-card {
+  background: #fff;
+  border-radius: 20px;
+  border: 2px solid transparent;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.07);
+  padding: 32px 28px 28px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  transition: transform 0.25s, box-shadow 0.25s;
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 36px rgba(0, 0, 0, 0.12);
+  }
+
+  &.plano-destaque {
+    border-color: #1a5f7a;
+    box-shadow: 0 8px 36px rgba(26, 95, 122, 0.22);
+  }
+}
+
+// ─── Badges ────────────────────────────────────────────────────────────────
+.badge-popular,
+.badge-ativo {
+  position: absolute;
+  top: -14px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 4px 16px;
+  white-space: nowrap;
+}
+
+.badge-popular {
+  background: #1a5f7a;
+  color: #fff;
+  i { color: #fbbf24; }
+}
+
+.badge-ativo {
+  background: #d1fae5;
+  color: #065f46;
+}
+
+// ─── Header do plano ───────────────────────────────────────────────────────
+.plano-header { text-align: center; }
+
+.plano-nome {
+  font-size: 22px;
+  font-weight: 800;
+  color: #0d3d52;
+  margin-bottom: 12px;
+}
+
+.plano-preco {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 6px;
+  margin-bottom: 12px;
+}
+
+.preco-valor {
+  font-size: 40px;
+  font-weight: 800;
+  color: #1a5f7a;
+  line-height: 1;
+}
+
+.preco-periodo {
+  font-size: 14px;
+  color: #6b7280;
+  font-weight: 500;
+}
+
+.plano-destaque .preco-valor { color: #0d3d52; }
+
+.plano-descricao {
+  font-size: 14px;
+  color: #6b7280;
+  line-height: 1.5;
+}
+
+// ─── Recursos ──────────────────────────────────────────────────────────────
+.plano-recursos {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  flex: 1;
+
+  li {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    font-size: 14px;
+    color: #374151;
+    line-height: 1.4;
+
+    i {
+      color: #059669;
+      font-size: 14px;
+      margin-top: 1px;
+      flex-shrink: 0;
+    }
+  }
+}
+
+// ─── Botões ────────────────────────────────────────────────────────────────
+.plano-footer { margin-top: auto; }
+
+.btn-plano {
+  width: 100%;
+  padding: 13px;
+  border-radius: 12px;
+  font-size: 15px;
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+
+  &--destaque {
+    background: linear-gradient(135deg, #0d3d52, #1a5f7a);
+    color: #fff;
+    box-shadow: 0 4px 14px rgba(26, 95, 122, 0.35);
+
+    &:hover:not(:disabled) {
+      background: linear-gradient(135deg, #0a2e3f, #155070);
+      box-shadow: 0 6px 18px rgba(26, 95, 122, 0.45);
+      transform: translateY(-1px);
+    }
+  }
+
+  &--padrao {
+    background: #f0f9ff;
+    color: #1a5f7a;
+    border: 2px solid #bae6fd;
+
+    &:hover:not(:disabled) {
+      background: #e0f2fe;
+      border-color: #7dd3fc;
+    }
+  }
+
+  &--ativo {
+    background: #d1fae5;
+    color: #065f46;
+    cursor: default;
+  }
+
+  &--free {
+    background: #f3f4f6;
+    color: #9ca3af;
+    cursor: default;
+  }
+
+  &:disabled { opacity: 0.7; }
+}
+
+// ─── Nota ─────────────────────────────────────────────────────────────────
+.planos-nota {
+  text-align: center;
+  font-size: 13px;
+  color: #9ca3af;
+  margin-top: 32px;
+}
+
+// ─── Responsivo ──────────────────────────────────────────────────────────
+@media (max-width: 640px) {
+  .planos-hero { padding: 44px 0 60px; }
+  .plano-card { padding: 28px 20px 24px; }
+}

@@ -47,13 +47,31 @@ export class AuthService {
     return this.http.post<AuthResponse>(`${this.apiUrl}/login`, { email, senha }).pipe(
       tap((res) => {
         localStorage.setItem(this.TOKEN_KEY, res.token);
-        const sessao: UsuarioSessao = { nome: res.nome, email: res.email, tipo: res.tipo };
+        const sessao: UsuarioSessao = {
+          nome: res.nome,
+          email: res.email,
+          tipo: res.tipo,
+          plano: res.plano,
+          planoExpiraEm: res.planoExpiraEm
+        };
         sessionStorage.setItem(this.STORAGE_KEY, JSON.stringify(sessao));
         this.usuarioSubject.next(sessao);
         this.router.navigate(['/home']);
         this.notifier.success('Login realizado com sucesso');
       })
     );
+  }
+
+  get planoAtual(): string {
+    return this.usuarioAtual?.plano ?? 'FREE';
+  }
+
+  atualizarPlanoNaSessao(plano: string, planoExpiraEm?: string): void {
+    const atual = this.usuarioSubject.value;
+    if (!atual) return;
+    const atualizado: UsuarioSessao = { ...atual, plano: plano as any, planoExpiraEm };
+    sessionStorage.setItem(this.STORAGE_KEY, JSON.stringify(atualizado));
+    this.usuarioSubject.next(atualizado);
   }
 
   logout(): void {

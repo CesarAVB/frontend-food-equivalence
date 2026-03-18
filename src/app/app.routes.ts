@@ -20,6 +20,25 @@ export const routes: Routes = [
     canActivate: [authGuard]
   },
   {
+    path: 'planos',
+    loadComponent: () => import('./pages/planos/planos').then(m => m.PlanosComponent),
+    canActivate: [authGuard]
+  },
+  {
+    path: 'pagamento',
+    canActivate: [authGuard],
+    children: [
+      {
+        path: 'sucesso',
+        loadComponent: () => import('./pages/pagamento/sucesso').then(m => m.PagamentoSucessoComponent)
+      },
+      {
+        path: 'cancelado',
+        loadComponent: () => import('./pages/pagamento/cancelado').then(m => m.PagamentoCanceladoComponent)
+      }
+    ]
+  },
+  {
     path: 'admin',
     canActivate: [authGuard],
     children: [

@@ -18,4 +18,6 @@ export interface UsuarioSessao {
   nome: string;
   email: string;
   tipo: UsuarioTipo;
+  plano?: PlanoTipo;
+  planoExpiraEm?: string;
 }
