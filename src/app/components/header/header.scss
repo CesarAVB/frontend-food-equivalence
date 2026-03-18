@@ -33,16 +33,14 @@
     gap: 0;
     text-decoration: none;
     flex-shrink: 0;
-    padding: 8px 12px;
-    border-radius: 16px;
-    background: rgba(255, 255, 255, 0.72);
-    border: 1px solid rgba(26, 95, 122, 0.1);
-    transition: transform 0.2s ease, background-color 0.2s ease, border-color 0.2s ease;
+    padding: 0;
+    border-radius: 0;
+    background: transparent;
+    border: none;
+    transition: transform 0.2s ease;
 
     &:hover {
       transform: translateY(-1px);
-      background: rgba(255, 255, 255, 0.9);
-      border-color: rgba(26, 95, 122, 0.2);
     }
 
     .brand-logo {
@@ -192,7 +190,7 @@
   @media (max-width: 560px) {
     .header-right { gap: 8px; }
     .brand-cluster { gap: 6px; }
-    .brand { padding: 6px 8px; }
+    .brand { padding: 0; }
     .user-nome { max-width: 92px; }
     .logout-label { display: none; }
     .user-chip { padding: 4px 6px 4px 4px; max-width: 126px; }
