@@ -27,6 +27,8 @@ export class AuthService {
   login(usuario: Usuario): void {
     sessionStorage.setItem(this.STORAGE_KEY, JSON.stringify(usuario));
     this.usuarioSubject.next(usuario);
+    // Redireciona para a dashboard após login bem-sucedido
+    this.router.navigate(['/home']);
   }
 
   logout(): void {
