@@ -1,7 +1,9 @@
 import { Component, Input, SimpleChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { EquivalenciaResponse } from '../../models/equivalencia-response';
 import { FormsModule } from '@angular/forms';
+import { EquivalenciaDetalhada } from '../../models/equivalencia-response';
+import { Alimento } from '../../models/alimento';
+import { ResultadoEquivalencias } from '../equivalencia-form/equivalencia-form';
 
 @Component({
   selector: 'app-resultado',
@@ -12,36 +14,29 @@ import { FormsModule } from '@angular/forms';
 })
 export class ResultadoComponent {
 
-  @Input() dados: EquivalenciaResponse | null = null;
-  // Ordenação controlada por coluna: 'descricao' (Alimento) ou 'quantidade' (Qtd g)
-  sortField: 'descricao' | 'quantidade' = 'descricao';
-  sortAsc = true; // true = asc, false = desc
+  @Input() dados: ResultadoEquivalencias | null = null;
+  sortField: 'nomeDestino' | 'fatorEquivalencia' = 'nomeDestino';
+  sortAsc = true;
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['dados'] && this.dados) {
-      this.ordenarResultados();
+      this.sortField = 'nomeDestino';
+      this.sortAsc = true;
     }
   }
 
-  obterEquivalentes() {
+  obterEquivalencias(): EquivalenciaDetalhada[] {
     if (!this.dados) return [];
-
-    const equivalentes = [...this.dados.equivalentes];
-
-    if (this.sortField === 'quantidade') {
-      equivalentes.sort((a, b) => (a.quantidadeEquivalenteG - b.quantidadeEquivalenteG) * (this.sortAsc ? 1 : -1));
+    const lista = [...this.dados.equivalencias];
+    if (this.sortField === 'fatorEquivalencia') {
+      lista.sort((a, b) => (a.fatorEquivalencia - b.fatorEquivalencia) * (this.sortAsc ? 1 : -1));
     } else {
-      equivalentes.sort((a, b) => a.descricao.localeCompare(b.descricao, 'pt', { sensitivity: 'base' }) * (this.sortAsc ? 1 : -1));
+      lista.sort((a, b) => a.nomeDestino.localeCompare(b.nomeDestino, 'pt', { sensitivity: 'base' }) * (this.sortAsc ? 1 : -1));
     }
-    
-    return equivalentes;
+    return lista;
   }
 
-  ordenarResultados(): void {
-    // Trigger change detection
-  }
-
-  toggleSort(field: 'descricao' | 'quantidade') {
+  toggleSort(field: 'nomeDestino' | 'fatorEquivalencia') {
     if (this.sortField === field) {
       this.sortAsc = !this.sortAsc;
     } else {
@@ -50,30 +45,26 @@ export class ResultadoComponent {
     }
   }
 
+  get alimentoOrigem(): Alimento | null {
+    return this.dados?.alimentoOrigem ?? null;
+  }
+
   exportarCSV(): void {
     if (!this.dados) return;
-
-    let csv = 'Alimento,Quantidade (g)\n';
-    csv += `${this.dados.alimentoSelecionado.descricao},${this.dados.quantidade}\n\n`;
-    csv += 'Equivalentes\n';
-    csv += 'Alimento,Quantidade (g)\n';
-
-    this.obterEquivalentes().forEach(equiv => {
-      csv += `${equiv.descricao},${equiv.quantidadeEquivalenteG}\n`;
+    const origem = this.dados.alimentoOrigem;
+    let csv = `Alimento de Origem;Grupo;Energia (kcal)\n`;
+    csv += `${origem.descricao};${origem.grupo};${origem.energiaKcal}\n\n`;
+    csv += `Equivalências\n`;
+    csv += `Substituto;Grupo;Fator de Equivalência;Observação\n`;
+    this.obterEquivalencias().forEach(eq => {
+      csv += `${eq.nomeDestino};${eq.grupoDestino};${eq.fatorEquivalencia};${eq.observacao ?? ''}\n`;
     });
-
-    const blob = new Blob([csv], { type: 'text/csv' });
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
     const url = window.URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = 'equivalencias.csv';
+    a.download = `equivalencias_${origem.descricao.replace(/\s+/g, '_')}.csv`;
     a.click();
     window.URL.revokeObjectURL(url);
-  }
-
-  copiarParaClipboard(texto: string): void {
-    navigator.clipboard.writeText(texto).then(() => {
-      alert('Copiado para a área de transferência!');
-    });
   }
 }

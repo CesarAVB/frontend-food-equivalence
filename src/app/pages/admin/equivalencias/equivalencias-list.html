@@ -1,0 +1,182 @@
+<div class="container-fluid py-4">
+
+  <!-- Page Header -->
+  <div class="d-flex align-items-center justify-content-between mb-4 flex-wrap gap-2">
+    <div class="d-flex align-items-center gap-3">
+      <i class="fas fa-exchange-alt fa-lg text-primary"></i>
+      <div>
+        <h4 class="mb-0 fw-bold">Gestão de Equivalências</h4>
+        <small class="text-muted">{{ totalElements }} equivalência(s) cadastrada(s)</small>
+      </div>
+    </div>
+    <button class="btn btn-success" (click)="abrirModalCriar()">
+      <i class="fas fa-plus me-1"></i>Nova Equivalência
+    </button>
+  </div>
+
+  <!-- Loading -->
+  @if (carregando) {
+    <div class="text-center py-5">
+      <div class="spinner-border text-success" role="status"></div>
+      <p class="mt-2 text-muted">Carregando equivalências...</p>
+    </div>
+  }
+
+  <!-- Table -->
+  @if (!carregando) {
+    <div class="table-responsive">
+      <table class="table table-hover align-middle">
+        <thead class="table-light">
+          <tr>
+            <th>Alimento de Origem</th>
+            <th class="text-center">→</th>
+            <th>Alimento Substituto</th>
+            <th class="text-center">Fator</th>
+            <th>Observação</th>
+            <th class="text-center">Ações</th>
+          </tr>
+        </thead>
+        <tbody>
+          @if (equivalencias.length === 0) {
+            <tr>
+              <td colspan="6" class="text-center py-4 text-muted">
+                <i class="fas fa-inbox fa-2x mb-2 d-block"></i>
+                Nenhuma equivalência encontrada.
+              </td>
+            </tr>
+          }
+          @for (eq of equivalencias; track eq.id) {
+            <tr>
+              <td>
+                <div class="fw-semibold">{{ nomeAlimento(eq.alimentoOrigemId) }}</div>
+                <small class="text-muted">{{ grupoAlimento(eq.alimentoOrigemId) }}</small>
+              </td>
+              <td class="text-center text-muted">
+                <i class="fas fa-arrow-right"></i>
+              </td>
+              <td>
+                <div class="fw-semibold">{{ nomeAlimento(eq.alimentoDestinoId) }}</div>
+                <small class="text-muted">{{ grupoAlimento(eq.alimentoDestinoId) }}</small>
+              </td>
+              <td class="text-center">
+                <span class="fator-badge">{{ eq.fatorEquivalencia | number:'1.1-4' }}</span>
+              </td>
+              <td class="text-muted obs-cell">{{ eq.observacao ?? '—' }}</td>
+              <td class="text-center">
+                <div class="d-flex gap-1 justify-content-center">
+                  <button class="btn btn-sm btn-outline-primary" title="Editar" (click)="abrirModalEditar(eq)">
+                    <i class="fas fa-edit"></i>
+                  </button>
+                  <button class="btn btn-sm btn-outline-danger" title="Remover" (click)="remover(eq)">
+                    <i class="fas fa-trash"></i>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Pagination -->
+    @if (totalPages > 1) {
+      <div class="d-flex align-items-center justify-content-between mt-3 flex-wrap gap-2">
+        <small class="text-muted">
+          Página {{ currentPage + 1 }} de {{ totalPages }} ({{ totalElements }} itens)
+        </small>
+        <nav>
+          <ul class="pagination pagination-sm mb-0">
+            <li class="page-item" [class.disabled]="currentPage === 0">
+              <button class="page-link" (click)="irParaPagina(currentPage - 1)">
+                <i class="fas fa-chevron-left"></i>
+              </button>
+            </li>
+            @for (p of paginas; track p) {
+              @if (p < 5 || p === totalPages - 1 || Math.abs(p - currentPage) <= 1) {
+                <li class="page-item" [class.active]="p === currentPage">
+                  <button class="page-link" (click)="irParaPagina(p)">{{ p + 1 }}</button>
+                </li>
+              }
+            }
+            <li class="page-item" [class.disabled]="currentPage === totalPages - 1">
+              <button class="page-link" (click)="irParaPagina(currentPage + 1)">
+                <i class="fas fa-chevron-right"></i>
+              </button>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    }
+  }
+
+</div>
+
+<!-- Modal Equivalência -->
+<div class="modal fade" id="modalEquivalencia" tabindex="-1" aria-labelledby="modalEquivalenciaLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalEquivalenciaLabel">
+          <i class="fas fa-exchange-alt me-2"></i>{{ modoEdicao ? 'Editar Equivalência' : 'Nova Equivalência' }}
+        </h5>
+        <button type="button" class="btn-close" (click)="fecharModal()" aria-label="Fechar"></button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="form">
+          <div class="row g-3">
+            <div class="col-md-6">
+              <label class="form-label fw-semibold">Alimento de Origem *</label>
+              <select class="form-select" formControlName="alimentoOrigemId"
+                [class.is-invalid]="form.get('alimentoOrigemId')?.invalid && form.get('alimentoOrigemId')?.touched">
+                <option value="" disabled>Selecione o alimento...</option>
+                @for (alimento of todosAlimentos; track alimento.id) {
+                  <option [value]="alimento.id">{{ alimento.descricao }} ({{ alimento.grupo }})</option>
+                }
+              </select>
+              @if (form.get('alimentoOrigemId')?.invalid && form.get('alimentoOrigemId')?.touched) {
+                <div class="invalid-feedback">Alimento de origem é obrigatório.</div>
+              }
+            </div>
+            <div class="col-md-6">
+              <label class="form-label fw-semibold">Alimento Substituto *</label>
+              <select class="form-select" formControlName="alimentoDestinoId"
+                [class.is-invalid]="form.get('alimentoDestinoId')?.invalid && form.get('alimentoDestinoId')?.touched">
+                <option value="" disabled>Selecione o substituto...</option>
+                @for (alimento of todosAlimentos; track alimento.id) {
+                  <option [value]="alimento.id">{{ alimento.descricao }} ({{ alimento.grupo }})</option>
+                }
+              </select>
+              @if (form.get('alimentoDestinoId')?.invalid && form.get('alimentoDestinoId')?.touched) {
+                <div class="invalid-feedback">Alimento substituto é obrigatório.</div>
+              }
+            </div>
+            <div class="col-md-4">
+              <label class="form-label fw-semibold">Fator de Equivalência *</label>
+              <input type="number" class="form-control" formControlName="fatorEquivalencia"
+                [class.is-invalid]="form.get('fatorEquivalencia')?.invalid && form.get('fatorEquivalencia')?.touched"
+                placeholder="Ex: 1.2500" step="0.0001" min="0.0001">
+              <div class="form-text">Quantidade do substituto por 1 unidade da origem</div>
+              @if (form.get('fatorEquivalencia')?.invalid && form.get('fatorEquivalencia')?.touched) {
+                <div class="invalid-feedback">Fator deve ser maior que 0.</div>
+              }
+            </div>
+            <div class="col-12">
+              <label class="form-label fw-semibold">Observação</label>
+              <textarea class="form-control" formControlName="observacao"
+                placeholder="Observação opcional..." rows="2"></textarea>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="fecharModal()">Cancelar</button>
+        <button type="button" class="btn btn-success" (click)="salvar()" [disabled]="salvando">
+          @if (salvando) {
+            <span class="spinner-border spinner-border-sm me-1"></span>
+          }
+          {{ modoEdicao ? 'Salvar Alterações' : 'Criar Equivalência' }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

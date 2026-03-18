@@ -1,0 +1,17 @@
+.fator-badge {
+  background: #dbeafe;
+  color: #1e40af;
+  font-weight: 700;
+  font-size: 13px;
+  padding: 3px 10px;
+  border-radius: 999px;
+}
+
+.obs-cell {
+  max-width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.modal.show { display: block !important; }

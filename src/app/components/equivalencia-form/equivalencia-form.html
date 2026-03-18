@@ -3,11 +3,11 @@
   <!-- Card Header -->
   <div class="card-head">
     <div class="card-head-icon">
-      <i class="fas fa-calculator"></i>
+      <i class="fas fa-exchange-alt"></i>
     </div>
     <div>
-      <h5 class="card-head-title">Calcular Equivalências</h5>
-      <p class="card-head-subtitle">Selecione o alimento e a quantidade</p>
+      <h5 class="card-head-title">Buscar Equivalências</h5>
+      <p class="card-head-subtitle">Selecione um alimento para ver suas substituições</p>
     </div>
   </div>
 
@@ -15,18 +15,29 @@
   <div class="card-body-inner">
 
     <!-- Feedback -->
-    <div *ngIf="mensagem" class="feedback-alert"
-      [class.feedback-success]="tipoMensagem === 'success'"
-      [class.feedback-error]="tipoMensagem !== 'success'">
-      <i [ngClass]="tipoMensagem === 'success' ? 'fas fa-check-circle' : 'fas fa-exclamation-circle'"></i>
-      <span>{{ mensagem }}</span>
-      <button class="feedback-close" (click)="mensagem = ''" aria-label="Fechar">
-        <i class="fas fa-times"></i>
-      </button>
-    </div>
+    @if (mensagem) {
+      <div class="feedback-alert"
+        [class.feedback-success]="tipoMensagem === 'success'"
+        [class.feedback-error]="tipoMensagem === 'error'"
+        [class.feedback-info]="tipoMensagem === 'info'">
+        <i [ngClass]="tipoMensagem === 'success' ? 'fas fa-check-circle' : tipoMensagem === 'error' ? 'fas fa-exclamation-circle' : 'fas fa-info-circle'"></i>
+        <span>{{ mensagem }}</span>
+        <button class="feedback-close" (click)="mensagem = ''" aria-label="Fechar">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+    }
+
+    <!-- Loading inicial -->
+    @if (carregandoAlimentos) {
+      <div class="text-center py-3">
+        <span class="spinner-border spinner-border-sm text-success me-2" role="status"></span>
+        <small class="text-muted">Carregando alimentos...</small>
+      </div>
+    }
 
     <!-- Form -->
-    <form [formGroup]="form" (ngSubmit)="enviar()">
+    <form [formGroup]="form">
 
       <!-- Selecionar Grupo -->
       <div class="field-group">
@@ -41,15 +52,16 @@
             formControlName="grupo"
             [class.invalid]="form.get('grupo')?.invalid && form.get('grupo')?.touched">
             <option value="" disabled>-- Selecione um grupo --</option>
-            <option *ngFor="let grupo of grupos" [value]="grupo">
-              {{ grupo }}
-            </option>
+            @for (grupo of grupos; track grupo) {
+              <option [value]="grupo">{{ grupo }}</option>
+            }
           </select>
         </div>
-        <span class="field-error"
-          *ngIf="form.get('grupo')?.invalid && form.get('grupo')?.touched">
-          <i class="fas fa-exclamation-triangle"></i>Grupo é obrigatório
-        </span>
+        @if (form.get('grupo')?.invalid && form.get('grupo')?.touched) {
+          <span class="field-error">
+            <i class="fas fa-exclamation-triangle"></i>Grupo é obrigatório
+          </span>
+        }
       </div>
 
       <!-- Selecionar Alimento -->
@@ -63,54 +75,33 @@
             class="field-input"
             id="alimentoId"
             formControlName="alimentoId"
-            [disabled]="alimentos.length === 0 || carregandoAlimentos"
             [class.invalid]="form.get('alimentoId')?.invalid && form.get('alimentoId')?.touched">
             <option value="" disabled>
-              {{ carregandoAlimentos ? 'Carregando alimentos...' : '-- Selecione um alimento --' }}
+              {{ alimentos.length === 0 ? '-- Selecione um grupo primeiro --' : '-- Selecione um alimento --' }}
             </option>
-            <option *ngFor="let alimento of alimentos" [value]="alimento.id">
-              {{ alimento.descricao }}
-            </option>
+            @for (alimento of alimentos; track alimento.id) {
+              <option [value]="alimento.id">{{ alimento.descricao }} ({{ alimento.energiaKcal }} kcal)</option>
+            }
           </select>
         </div>
-        <span class="field-error"
-          *ngIf="form.get('alimentoId')?.invalid && form.get('alimentoId')?.touched">
-          <i class="fas fa-exclamation-triangle"></i>Alimento é obrigatório
-        </span>
+        @if (form.get('alimentoId')?.invalid && form.get('alimentoId')?.touched) {
+          <span class="field-error">
+            <i class="fas fa-exclamation-triangle"></i>Alimento é obrigatório
+          </span>
+        }
       </div>
 
-      <!-- Quantidade -->
-      <div class="field-group">
-        <label for="quantidade" class="field-label">
-          <i class="fas fa-weight"></i>Quantidade
-        </label>
-        <div class="field-input-wrap">
-          <span class="field-prefix"><i class="fas fa-balance-scale"></i></span>
-          <input
-            type="number"
-            class="field-input"
-            id="quantidade"
-            formControlName="quantidade"
-            placeholder="Ex: 100"
-            [class.invalid]="form.get('quantidade')?.invalid && form.get('quantidade')?.touched"
-            step="0.01"
-            min="0.01">
-          <span class="field-suffix">g</span>
+      <!-- Loading equivalencias -->
+      @if (carregando) {
+        <div class="text-center py-2">
+          <span class="spinner-border spinner-border-sm text-success me-2" role="status"></span>
+          <small class="text-muted">Buscando equivalências...</small>
         </div>
-        <span class="field-error"
-          *ngIf="form.get('quantidade')?.invalid && form.get('quantidade')?.touched">
-          <i class="fas fa-exclamation-triangle"></i>Quantidade deve ser maior que 0
-        </span>
-      </div>
+      }
 
-      <!-- Botões de Ação -->
+      <!-- Botão Limpar -->
       <div class="form-actions">
-        <button type="submit" class="btn-calc" [disabled]="carregando || form.invalid">
-          <span class="spinner-border spinner-border-sm" *ngIf="carregando" role="status"></span>
-          <i class="fas fa-search" *ngIf="!carregando"></i>
-          {{ carregando ? 'Calculando...' : 'Calcular' }}
-        </button>
-        <button type="button" class="btn-reset" (click)="limpar()" [disabled]="carregando">
+        <button type="button" class="btn-reset" (click)="limpar()">
           <i class="fas fa-redo"></i>Limpar
         </button>
       </div>

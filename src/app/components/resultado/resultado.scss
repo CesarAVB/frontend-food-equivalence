@@ -359,12 +359,26 @@
       .food-name {
         color: #1e2d2a;
         font-weight: 500;
-
-        /* Estrela de melhor correspondência removida */
       }
 
-      // Removidas as colunas de kcal, diferença e ação — estilos correspondentes eliminados
+      .obs-cell {
+        max-width: 180px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        font-size: 13px;
+        color: #7a9e96;
+      }
     }
+  }
+
+  .badge-grupo {
+    font-size: 11px;
+    font-weight: 600;
+    padding: 3px 8px;
+    border-radius: 999px;
+    background: #e8f5f0;
+    color: #1a5f7a;
   }
 
   // Footer

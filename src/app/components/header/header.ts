@@ -1,7 +1,8 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { AuthService, Usuario } from '../../services/auth.service';
+import { AuthService } from '../../services/auth.service';
+import { UsuarioSessao } from '../../models/usuario';
 import { Observable } from 'rxjs';
 
 @Component({
@@ -13,9 +14,15 @@ import { Observable } from 'rxjs';
 })
 export class HeaderComponent {
   private readonly auth = inject(AuthService);
-  usuario$: Observable<Usuario | null> = this.auth.usuario$;
+  usuario$: Observable<UsuarioSessao | null> = this.auth.usuario$;
 
-  constructor() {}
+  get isAdmin(): boolean {
+    return this.auth.isAdmin;
+  }
+
+  get isAdminOrNutricionista(): boolean {
+    return this.auth.isAdminOrNutricionista;
+  }
 
   iniciais(nome: string): string {
     return nome

@@ -1,0 +1,194 @@
+<div class="container-fluid py-4">
+
+  <!-- Page Header -->
+  <div class="d-flex align-items-center justify-content-between mb-4 flex-wrap gap-2">
+    <div class="d-flex align-items-center gap-3">
+      <i class="fas fa-apple-alt fa-lg text-success"></i>
+      <div>
+        <h4 class="mb-0 fw-bold">Gestão de Alimentos</h4>
+        <small class="text-muted">{{ totalElements }} alimento(s) cadastrado(s)</small>
+      </div>
+    </div>
+    <button class="btn btn-success" (click)="abrirModalCriar()">
+      <i class="fas fa-plus me-1"></i>Novo Alimento
+    </button>
+  </div>
+
+  <!-- Filters -->
+  <div class="row g-2 mb-3">
+    <div class="col-md-6">
+      <input type="text" class="form-control" placeholder="Buscar por descrição..."
+        [(ngModel)]="filtroTexto" [ngModelOptions]="{standalone: true}" (keyup.enter)="buscar()">
+    </div>
+    <div class="col-md-4">
+      <select class="form-select" [(ngModel)]="filtroGrupo" [ngModelOptions]="{standalone: true}" (change)="buscar()">
+        <option value="">Todos os grupos</option>
+        @for (grupo of grupos; track grupo) {
+          <option [value]="grupo">{{ grupo }}</option>
+        }
+      </select>
+    </div>
+    <div class="col-md-2">
+      <button class="btn btn-outline-secondary w-100" (click)="buscar()">
+        <i class="fas fa-search me-1"></i>Buscar
+      </button>
+    </div>
+  </div>
+
+  <!-- Loading -->
+  @if (carregando) {
+    <div class="text-center py-5">
+      <div class="spinner-border text-success" role="status"></div>
+      <p class="mt-2 text-muted">Carregando alimentos...</p>
+    </div>
+  }
+
+  <!-- Table -->
+  @if (!carregando) {
+    <div class="table-responsive">
+      <table class="table table-hover align-middle">
+        <thead class="table-light">
+          <tr>
+            <th>Código</th>
+            <th>Descrição</th>
+            <th class="text-center">Grupo</th>
+            <th class="text-center">Energia (kcal)</th>
+            <th class="text-center">Ações</th>
+          </tr>
+        </thead>
+        <tbody>
+          @if (alimentos.length === 0) {
+            <tr>
+              <td colspan="5" class="text-center py-4 text-muted">
+                <i class="fas fa-inbox fa-2x mb-2 d-block"></i>
+                Nenhum alimento encontrado.
+              </td>
+            </tr>
+          }
+          @for (alimento of alimentos; track alimento.id) {
+            <tr>
+              <td><code class="text-muted">{{ alimento.codigoSubstituicao }}</code></td>
+              <td class="fw-semibold">{{ alimento.descricao }}</td>
+              <td class="text-center">
+                <span class="badge-grupo" [ngClass]="grupoBadgeClass(alimento.grupo)">{{ alimento.grupo }}</span>
+              </td>
+              <td class="text-center fw-bold text-success">{{ alimento.energiaKcal | number:'1.0-2' }}</td>
+              <td class="text-center">
+                <div class="d-flex gap-1 justify-content-center">
+                  <button class="btn btn-sm btn-outline-primary" title="Editar" (click)="abrirModalEditar(alimento)">
+                    <i class="fas fa-edit"></i>
+                  </button>
+                  @if (isAdmin) {
+                    <button class="btn btn-sm btn-outline-danger" title="Remover" (click)="remover(alimento)">
+                      <i class="fas fa-trash"></i>
+                    </button>
+                  }
+                </div>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Pagination -->
+    @if (totalPages > 1) {
+      <div class="d-flex align-items-center justify-content-between mt-3 flex-wrap gap-2">
+        <small class="text-muted">
+          Página {{ currentPage + 1 }} de {{ totalPages }} ({{ totalElements }} itens)
+        </small>
+        <nav>
+          <ul class="pagination pagination-sm mb-0">
+            <li class="page-item" [class.disabled]="currentPage === 0">
+              <button class="page-link" (click)="irParaPagina(currentPage - 1)">
+                <i class="fas fa-chevron-left"></i>
+              </button>
+            </li>
+            @for (p of paginas; track p) {
+              @if (p < 5 || p === totalPages - 1 || Math.abs(p - currentPage) <= 1) {
+                <li class="page-item" [class.active]="p === currentPage">
+                  <button class="page-link" (click)="irParaPagina(p)">{{ p + 1 }}</button>
+                </li>
+              }
+            }
+            <li class="page-item" [class.disabled]="currentPage === totalPages - 1">
+              <button class="page-link" (click)="irParaPagina(currentPage + 1)">
+                <i class="fas fa-chevron-right"></i>
+              </button>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    }
+  }
+
+</div>
+
+<!-- Modal Alimento -->
+<div class="modal fade" id="modalAlimento" tabindex="-1" aria-labelledby="modalAlimentoLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalAlimentoLabel">
+          <i class="fas fa-apple-alt me-2"></i>{{ modoEdicao ? 'Editar Alimento' : 'Novo Alimento' }}
+        </h5>
+        <button type="button" class="btn-close" (click)="fecharModal()" aria-label="Fechar"></button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="form">
+          <div class="row g-3">
+            <div class="col-md-6">
+              <label class="form-label fw-semibold">Código de Substituição *</label>
+              <input type="text" class="form-control" formControlName="codigoSubstituicao"
+                [class.is-invalid]="form.get('codigoSubstituicao')?.invalid && form.get('codigoSubstituicao')?.touched"
+                placeholder="Ex: FRUT.001">
+              @if (form.get('codigoSubstituicao')?.invalid && form.get('codigoSubstituicao')?.touched) {
+                <div class="invalid-feedback">Código é obrigatório.</div>
+              }
+            </div>
+            <div class="col-md-6">
+              <label class="form-label fw-semibold">Grupo *</label>
+              <select class="form-select" formControlName="grupo"
+                [class.is-invalid]="form.get('grupo')?.invalid && form.get('grupo')?.touched">
+                <option value="" disabled>Selecione...</option>
+                @for (grupo of grupos; track grupo) {
+                  <option [value]="grupo">{{ grupo }}</option>
+                }
+              </select>
+              @if (form.get('grupo')?.invalid && form.get('grupo')?.touched) {
+                <div class="invalid-feedback">Grupo é obrigatório.</div>
+              }
+            </div>
+            <div class="col-12">
+              <label class="form-label fw-semibold">Descrição *</label>
+              <input type="text" class="form-control" formControlName="descricao"
+                [class.is-invalid]="form.get('descricao')?.invalid && form.get('descricao')?.touched"
+                placeholder="Nome do alimento">
+              @if (form.get('descricao')?.invalid && form.get('descricao')?.touched) {
+                <div class="invalid-feedback">Descrição é obrigatória.</div>
+              }
+            </div>
+            <div class="col-md-6">
+              <label class="form-label fw-semibold">Energia (kcal) *</label>
+              <input type="number" class="form-control" formControlName="energiaKcal"
+                [class.is-invalid]="form.get('energiaKcal')?.invalid && form.get('energiaKcal')?.touched"
+                placeholder="0.00" step="0.01" min="0">
+              @if (form.get('energiaKcal')?.invalid && form.get('energiaKcal')?.touched) {
+                <div class="invalid-feedback">Energia deve ser ≥ 0.</div>
+              }
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="fecharModal()">Cancelar</button>
+        <button type="button" class="btn btn-success" (click)="salvar()" [disabled]="salvando">
+          @if (salvando) {
+            <span class="spinner-border spinner-border-sm me-1"></span>
+          }
+          {{ modoEdicao ? 'Salvar Alterações' : 'Criar Alimento' }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

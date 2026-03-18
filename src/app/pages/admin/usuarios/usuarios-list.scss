@@ -1,0 +1,28 @@
+.avatar-sm {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #1a5f7a, #2a7a9a);
+  color: white;
+  font-size: 14px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.badge-tipo {
+  font-size: 11px;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 999px;
+  letter-spacing: 0.5px;
+}
+
+.badge-admin    { background: #fde8d8; color: #c2410c; }
+.badge-nutri    { background: #d1fae5; color: #059669; }
+.badge-paciente { background: #dbeafe; color: #1d4ed8; }
+
+.modal.show { display: block !important; }
+.modal-backdrop { display: none; }

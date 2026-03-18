@@ -1,33 +1,19 @@
-import { Injectable } from '@angular/core';
-import {
-  HttpRequest,
-  HttpHandler,
-  HttpEvent,
-  HttpInterceptor,
-  HttpErrorResponse
-} from '@angular/common/http';
-import { Observable, throwError } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { HttpInterceptorFn, HttpErrorResponse } from '@angular/common/http';
+import { inject } from '@angular/core';
+import { Router } from '@angular/router';
+import { catchError, throwError } from 'rxjs';
 
-@Injectable()
-export class ErrorInterceptor implements HttpInterceptor {
+export const errorInterceptor: HttpInterceptorFn = (req, next) => {
+  const router = inject(Router);
 
-  constructor() { }
-
-  intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
-    return next.handle(request).pipe(
-      catchError((error: HttpErrorResponse) => {
-        let errorMessage = 'Erro desconhecido';
-
-        if (error.error instanceof ErrorEvent) {
-          errorMessage = `Erro: ${error.error.message}`;
-        } else {
-          errorMessage = `Código: ${error.status} - ${error.message}`;
-        }
-
-        console.error(errorMessage);
-        return throwError(() => new Error(errorMessage));
-      })
-    );
-  }
-}
+  return next(req).pipe(
+    catchError((error: HttpErrorResponse) => {
+      if (error.status === 401) {
+        localStorage.removeItem('auth_token');
+        sessionStorage.removeItem('usuario_logado');
+        router.navigate(['/login']);
+      }
+      return throwError(() => error);
+    })
+  );
+};

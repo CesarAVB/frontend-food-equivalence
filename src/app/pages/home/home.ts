@@ -1,8 +1,7 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { EquivalenciaFormComponent } from '../../components/equivalencia-form/equivalencia-form';
+import { EquivalenciaFormComponent, ResultadoEquivalencias } from '../../components/equivalencia-form/equivalencia-form';
 import { ResultadoComponent } from '../../components/resultado/resultado';
-import { EquivalenciaResponse } from '../../models/equivalencia-response';
 
 @Component({
   selector: 'app-home',
@@ -13,9 +12,9 @@ import { EquivalenciaResponse } from '../../models/equivalencia-response';
 })
 export class HomeComponent {
 
-  resultado: EquivalenciaResponse | null = null;
+  resultado: ResultadoEquivalencias | null = null;
 
-  onResultado(dados: EquivalenciaResponse): void {
+  onResultado(dados: ResultadoEquivalencias | null): void {
     this.resultado = dados;
   }
 }

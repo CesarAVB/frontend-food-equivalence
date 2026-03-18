@@ -1,8 +1,15 @@
 import { Component, Output, EventEmitter, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { EquivalenciaService, AlimentoLista } from '../../services/equivalencia';
-import { CalcularEquivalenciasRequest } from '../../models/calcular-equivalencias-request';
+import { AlimentoService } from '../../services/alimento.service';
+import { EquivalenciaService } from '../../services/equivalencia.service';
+import { Alimento, GRUPOS_ALIMENTARES } from '../../models/alimento';
+import { Equivalencia, EquivalenciaDetalhada } from '../../models/equivalencia-response';
+
+export interface ResultadoEquivalencias {
+  alimentoOrigem: Alimento;
+  equivalencias: EquivalenciaDetalhada[];
+}
 
 @Component({
   selector: 'app-equivalencia-form',
@@ -13,7 +20,7 @@ import { CalcularEquivalenciasRequest } from '../../models/calcular-equivalencia
 })
 export class EquivalenciaFormComponent implements OnInit {
 
-  @Output() resultado = new EventEmitter<any>();
+  @Output() resultado = new EventEmitter<ResultadoEquivalencias | null>();
 
   form!: FormGroup;
   carregando = false;
@@ -21,54 +28,46 @@ export class EquivalenciaFormComponent implements OnInit {
   mensagem = '';
   tipoMensagem: 'success' | 'error' | 'info' = 'info';
 
-  grupos: string[] = [];
-  alimentos: AlimentoLista[] = [];
+  readonly grupos = GRUPOS_ALIMENTARES;
+  alimentos: Alimento[] = [];
+  todosAlimentos: Alimento[] = [];
 
   constructor(
     private fb: FormBuilder,
+    private alimentoService: AlimentoService,
     private equivalenciaService: EquivalenciaService
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.inicializarForm();
-    this.carregarGrupos();
+    this.carregarTodosAlimentos();
   }
 
   inicializarForm(): void {
     this.form = this.fb.group({
       grupo: ['', [Validators.required]],
-      alimentoId: ['', [Validators.required, Validators.min(1)]],
-      quantidade: ['', [Validators.required, Validators.min(0.01)]]
+      alimentoId: ['', [Validators.required]]
     });
 
-    // Quando o grupo mudar, buscar alimentos
     this.form.get('grupo')?.valueChanges.subscribe((grupo) => {
-      if (grupo) {
-        this.carregarAlimentos(grupo);
-        this.form.get('alimentoId')?.reset();
+      this.form.get('alimentoId')?.reset();
+      this.alimentos = grupo
+        ? this.todosAlimentos.filter(a => a.grupo === grupo)
+        : [];
+    });
+
+    this.form.get('alimentoId')?.valueChanges.subscribe((id) => {
+      if (id) {
+        this.buscarEquivalencias(Number(id));
       }
     });
   }
 
-  carregarGrupos(): void {
+  carregarTodosAlimentos(): void {
     this.carregandoAlimentos = true;
-    this.equivalenciaService.listarGrupos().subscribe({
-      next: (grupos) => {
-        this.grupos = grupos;
-        this.carregandoAlimentos = false;
-      },
-      error: () => {
-        this.carregandoAlimentos = false;
-        this.exibirMensagem('Erro ao carregar grupos', 'error');
-      }
-    });
-  }
-
-  carregarAlimentos(grupo: string): void {
-    this.carregandoAlimentos = true;
-    this.equivalenciaService.listarAlimentosPorGrupo(grupo).subscribe({
-      next: (alimentos) => {
-        this.alimentos = alimentos;
+    this.alimentoService.listarTodos().subscribe({
+      next: (page) => {
+        this.todosAlimentos = page.content;
         this.carregandoAlimentos = false;
       },
       error: () => {
@@ -78,30 +77,37 @@ export class EquivalenciaFormComponent implements OnInit {
     });
   }
 
-  enviar(): void {
-    if (this.form.invalid) {
-      this.exibirMensagem('Por favor, preencha todos os campos corretamente', 'error');
-      return;
-    }
-
+  buscarEquivalencias(alimentoId: number): void {
     this.carregando = true;
     this.mensagem = '';
 
-    const request: CalcularEquivalenciasRequest = {
-      alimentoId: this.form.value.alimentoId,
-      quantidade: this.form.value.quantidade
-    };
+    this.equivalenciaService.listarPorAlimento(alimentoId).subscribe({
+      next: (equivalencias) => {
+        this.carregando = false;
+        const alimentoOrigem = this.todosAlimentos.find(a => a.id === alimentoId);
+        if (!alimentoOrigem) return;
 
-    this.equivalenciaService.calcularEquivalencias(request).subscribe({
-      next: (resposta) => {
-        this.carregando = false;
-        this.resultado.emit(resposta);
-        this.exibirMensagem('Equivalências calculadas com sucesso!', 'success');
+        const detalhadas: EquivalenciaDetalhada[] = equivalencias.map(eq => {
+          const destino = this.todosAlimentos.find(a => a.id === eq.alimentoDestinoId);
+          return {
+            ...eq,
+            nomeDestino: destino?.descricao ?? `Alimento #${eq.alimentoDestinoId}`,
+            grupoDestino: destino?.grupo ?? '-',
+            kcalDestino: destino?.energiaKcal ?? 0
+          };
+        });
+
+        this.resultado.emit({ alimentoOrigem, equivalencias: detalhadas });
+
+        if (detalhadas.length === 0) {
+          this.exibirMensagem('Nenhuma equivalência cadastrada para este alimento.', 'info');
+        } else {
+          this.exibirMensagem(`${detalhadas.length} equivalência(s) encontrada(s).`, 'success');
+        }
       },
-      error: (erro) => {
+      error: () => {
         this.carregando = false;
-        this.exibirMensagem('Erro ao calcular equivalências. Verifique os dados.', 'error');
-        console.error(erro);
+        this.exibirMensagem('Erro ao buscar equivalências.', 'error');
       }
     });
   }
@@ -116,8 +122,6 @@ export class EquivalenciaFormComponent implements OnInit {
   exibirMensagem(msg: string, tipo: 'success' | 'error' | 'info'): void {
     this.mensagem = msg;
     this.tipoMensagem = tipo;
-    setTimeout(() => {
-      this.mensagem = '';
-    }, 4000);
+    setTimeout(() => { this.mensagem = ''; }, 4000);
   }
 }

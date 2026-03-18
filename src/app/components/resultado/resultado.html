@@ -1,142 +1,156 @@
 <!-- Empty State -->
-<div *ngIf="!dados" class="empty-state">
-
-  <div class="empty-icon">
-    <i class="fas fa-exchange-alt"></i>
+@if (!dados) {
+  <div class="empty-state">
+    <div class="empty-icon">
+      <i class="fas fa-exchange-alt"></i>
+    </div>
+    <h5>Como usar a ferramenta</h5>
+    <p>Selecione um grupo alimentar e depois um alimento para ver as substituições disponíveis no plano alimentar.</p>
+    <div class="empty-tips">
+      <div class="tip">
+        <span class="tip-num">1</span>
+        <div class="tip-icon"><i class="fas fa-th-list"></i></div>
+        <div class="tip-text">
+          <strong>Grupo alimentar</strong>
+          <span>Selecione a categoria do alimento</span>
+        </div>
+      </div>
+      <div class="tip">
+        <span class="tip-num">2</span>
+        <div class="tip-icon tip-icon--amber"><i class="fas fa-carrot"></i></div>
+        <div class="tip-text">
+          <strong>Alimento de origem</strong>
+          <span>Escolha o item que deseja substituir</span>
+        </div>
+      </div>
+      <div class="tip">
+        <span class="tip-num">3</span>
+        <div class="tip-icon tip-icon--green"><i class="fas fa-list-ul"></i></div>
+        <div class="tip-text">
+          <strong>Equivalências</strong>
+          <span>Veja os substitutos e seus fatores</span>
+        </div>
+      </div>
+    </div>
   </div>
-
-  <h5>Como usar a ferramenta</h5>
-  <p>Preencha o formulário ao lado seguindo os passos abaixo para ver as substituições do seu plano alimentar.</p>
-
-  <div class="empty-tips">
-    <div class="tip">
-      <span class="tip-num">1</span>
-      <div class="tip-icon"><i class="fas fa-th-list"></i></div>
-      <div class="tip-text">
-        <strong>Grupo alimentar</strong>
-        <span>Selecione a categoria do alimento</span>
-      </div>
-    </div>
-    <div class="tip">
-      <span class="tip-num">2</span>
-      <div class="tip-icon tip-icon--amber"><i class="fas fa-carrot"></i></div>
-      <div class="tip-text">
-        <strong>Alimento</strong>
-        <span>Escolha o item a ser substituído</span>
-      </div>
-    </div>
-    <div class="tip">
-      <span class="tip-num">3</span>
-      <div class="tip-icon tip-icon--green"><i class="fas fa-weight-hanging"></i></div>
-      <div class="tip-text">
-        <strong>Quantidade em gramas</strong>
-        <span>Informe os gramas prescritos</span>
-      </div>
-    </div>
-  </div>
-
-</div>
+}
 
 <!-- Results Card -->
-<div *ngIf="dados" class="resultado-card">
+@if (dados) {
+  <div class="resultado-card">
 
-  <!-- Header -->
-  <div class="res-header">
-    <div class="res-header-icon">
-      <i class="fas fa-check-circle"></i>
+    <!-- Header -->
+    <div class="res-header">
+      <div class="res-header-icon">
+        <i class="fas fa-check-circle"></i>
+      </div>
+      <div class="res-header-info">
+        <h5 class="res-header-title">Substituições Disponíveis</h5>
+        <p class="res-header-subtitle">{{ alimentoOrigem?.descricao }}</p>
+      </div>
     </div>
-    <div class="res-header-info">
-      <h5 class="res-header-title">Substituições Disponíveis</h5>
-      <p class="res-header-subtitle">{{ dados.alimentoSelecionado.descricao }}</p>
+
+    <!-- Stat Cards -->
+    <div class="res-stats">
+      <div class="stat-card">
+        <div class="stat-icon">
+          <i class="fas fa-utensils"></i>
+        </div>
+        <div class="stat-info">
+          <span class="stat-label">Alimento</span>
+          <span class="stat-value">{{ alimentoOrigem?.descricao }}</span>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon stat-icon--accent">
+          <i class="fas fa-tag"></i>
+        </div>
+        <div class="stat-info">
+          <span class="stat-label">Grupo</span>
+          <span class="stat-value">{{ alimentoOrigem?.grupo }}</span>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon stat-icon--green">
+          <i class="fas fa-fire-alt"></i>
+        </div>
+        <div class="stat-info">
+          <span class="stat-label">Energia</span>
+          <span class="stat-value">{{ alimentoOrigem?.energiaKcal | number:'1.0-1' }} kcal</span>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon stat-icon--orange">
+          <i class="fas fa-exchange-alt"></i>
+        </div>
+        <div class="stat-info">
+          <span class="stat-label">Equivalências</span>
+          <span class="stat-value">{{ dados.equivalencias.length }}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Table Section -->
+    <div class="res-body">
+
+      <!-- Controls -->
+      <div class="table-controls">
+        <h6 class="table-title">
+          <i class="fas fa-list-ul"></i>Alimentos Substitutos
+          <span class="count-badge">{{ dados.equivalencias.length }}</span>
+        </h6>
+      </div>
+
+      @if (dados.equivalencias.length === 0) {
+        <div class="text-center py-4 text-muted">
+          <i class="fas fa-inbox fa-2x mb-2 d-block"></i>
+          Nenhuma equivalência cadastrada para este alimento.
+        </div>
+      } @else {
+        <!-- Table -->
+        <div class="table-responsive">
+          <table class="equiv-table">
+            <thead>
+              <tr>
+                <th>
+                  <button class="th-button" (click)="toggleSort('nomeDestino')" aria-label="Ordenar por Alimento">
+                    <i class="fas fa-apple-alt"></i>Substituto
+                    <span class="sort-indicator">{{ sortField === 'nomeDestino' ? (sortAsc ? ' ▲' : ' ▼') : '' }}</span>
+                  </button>
+                </th>
+                <th class="text-center">Grupo</th>
+                <th class="text-center">
+                  <button class="th-button" (click)="toggleSort('fatorEquivalencia')" aria-label="Ordenar por Fator">
+                    <i class="fas fa-balance-scale"></i>Fator
+                    <span class="sort-indicator">{{ sortField === 'fatorEquivalencia' ? (sortAsc ? ' ▲' : ' ▼') : '' }}</span>
+                  </button>
+                </th>
+                <th>Observação</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (eq of obterEquivalencias(); track eq.id) {
+                <tr>
+                  <td class="food-name">{{ eq.nomeDestino }}</td>
+                  <td class="text-center">
+                    <span class="badge-grupo">{{ eq.grupoDestino }}</span>
+                  </td>
+                  <td class="text-center fw-bold">{{ eq.fatorEquivalencia | number:'1.1-4' }}</td>
+                  <td class="obs-cell">{{ eq.observacao ?? '—' }}</td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Footer -->
+        <div class="res-footer">
+          <button class="btn-export" (click)="exportarCSV()">
+            <i class="fas fa-file-csv"></i>Exportar CSV
+          </button>
+        </div>
+      }
+
     </div>
   </div>
-
-  <!-- Stat Cards -->
-  <div class="res-stats">
-    <div class="stat-card">
-      <div class="stat-icon">
-        <i class="fas fa-utensils"></i>
-      </div>
-      <div class="stat-info">
-        <span class="stat-label">Alimento</span>
-        <span class="stat-value">{{ dados.alimentoSelecionado.descricao }}</span>
-      </div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-icon stat-icon--accent">
-        <i class="fas fa-weight"></i>
-      </div>
-      <div class="stat-info">
-        <span class="stat-label">Quantidade</span>
-        <span class="stat-value">{{ dados.quantidade }} g</span>
-      </div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-icon stat-icon--green">
-        <i class="fas fa-fire-alt"></i>
-      </div>
-      <div class="stat-info">
-        <span class="stat-label">Calorias</span>
-        <span class="stat-value">{{ dados.calorias | number: '1.1-1' }} kcal</span>
-      </div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-icon stat-icon--orange">
-        <i class="fas fa-tag"></i>
-      </div>
-      <div class="stat-info">
-        <span class="stat-label">Grupo</span>
-        <span class="stat-value">{{ dados.alimentoSelecionado.grupo }}</span>
-      </div>
-    </div>
-  </div>
-
-  <!-- Table Section -->
-  <div class="res-body">
-
-    <!-- Controls -->
-    <div class="table-controls">
-      <h6 class="table-title">
-        <i class="fas fa-list-ul"></i>Alimentos Equivalentes
-        <span class="count-badge">{{ dados.equivalentes.length }}</span>
-      </h6>
-      <!-- Ordenação fixa em ordem alfabética -->
-    </div>
-
-    <!-- Table -->
-    <div class="table-responsive">
-      <table class="equiv-table">
-        <thead>
-          <tr>
-            <th>
-              <button class="th-button" (click)="toggleSort('descricao')" aria-label="Ordenar por Alimento">
-                <i class="fas fa-apple-alt"></i>Alimento
-                <span class="sort-indicator">{{ sortField === 'descricao' ? (sortAsc ? ' ▲' : ' ▼') : '' }}</span>
-              </button>
-            </th>
-            <th class="text-center">
-              <button class="th-button" (click)="toggleSort('quantidade')" aria-label="Ordenar por Quantidade">
-                <i class="fas fa-weight"></i>Qtd
-                <span class="sort-indicator">{{ sortField === 'quantidade' ? (sortAsc ? ' ▲' : ' ▼') : '' }}</span>
-              </button>
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let equiv of obterEquivalentes()">
-            <td class="food-name">{{ equiv.descricao }}</td>
-            <td class="text-center fw-bold">{{ equiv.quantidadeEquivalenteG | number: '1.0-0' }} g</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-
-    <!-- Footer -->
-    <div class="res-footer">
-      <button class="btn-export" (click)="exportarCSV()">
-        <i class="fas fa-file-csv"></i>Exportar CSV
-      </button>
-    </div>
-
-  </div>
-</div>
+}

@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
+import { NotificationService } from '../../services/notification.service';
 
 @Component({
   selector: 'app-login',
@@ -18,11 +19,14 @@ export class LoginComponent {
   submitted = false;
   errorMessage = '';
 
-  constructor(private fb: FormBuilder, private auth: AuthService) {
-    // Credenciais de teste padrão (apenas para desenvolvimento)
+  constructor(
+    private fb: FormBuilder,
+    private auth: AuthService,
+    private notifier: NotificationService
+  ) {
     this.loginForm = this.fb.group({
-      email: ['admin@admin.com', [Validators.required, Validators.email]],
-      senha: ['admin123', [Validators.required, Validators.minLength(6)]]
+      email: ['', [Validators.required, Validators.email]],
+      senha: ['', [Validators.required, Validators.minLength(6)]]
     });
   }
 
@@ -39,16 +43,23 @@ export class LoginComponent {
     }
 
     this.isLoading = true;
+    const { email, senha } = this.loginForm.value;
 
-    // TODO: substituir pela chamada real à API de autenticação
-    setTimeout(() => {
-      this.isLoading = false;
-      const email: string = this.loginForm.value.email;
-      const nome = email.split('@')[0]
-        .replace(/[._-]/g, ' ')
-        .replace(/\b\w/g, c => c.toUpperCase());
-      this.auth.login({ nome, email });
-    }, 1000);
+    this.auth.fazerLogin(email, senha).subscribe({
+      next: () => {
+        this.isLoading = false;
+      },
+      error: (err) => {
+        this.isLoading = false;
+        if (err.status === 401 || err.status === 403) {
+          this.errorMessage = 'E-mail ou senha inválidos.';
+        } else if (err.status === 0) {
+          this.errorMessage = 'Não foi possível conectar ao servidor. Verifique sua conexão.';
+        } else {
+          this.errorMessage = 'Ocorreu um erro ao fazer login. Tente novamente.';
+        }
+      }
+    });
   }
 
   get email() { return this.loginForm.get('email'); }

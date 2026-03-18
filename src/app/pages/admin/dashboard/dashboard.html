@@ -1,0 +1,114 @@
+<div class="container-fluid py-4">
+
+  <div class="d-flex align-items-center mb-4">
+    <i class="fas fa-tachometer-alt fa-lg text-success me-3"></i>
+    <div>
+      <h4 class="mb-0 fw-bold">Painel de Gestão</h4>
+      <small class="text-muted">Visão geral do sistema de equivalências alimentares</small>
+    </div>
+  </div>
+
+  @if (carregando) {
+    <div class="text-center py-5">
+      <div class="spinner-border text-success" role="status">
+        <span class="visually-hidden">Carregando...</span>
+      </div>
+      <p class="mt-3 text-muted">Carregando estatísticas...</p>
+    </div>
+  } @else {
+    <!-- Stats -->
+    <div class="row g-3 mb-4">
+      <div class="col-sm-6 col-lg-4">
+        <div class="stat-card">
+          <div class="stat-icon stat-icon--green">
+            <i class="fas fa-apple-alt"></i>
+          </div>
+          <div class="stat-body">
+            <p class="stat-label">Total de Alimentos</p>
+            <h3 class="stat-value">{{ totalAlimentos }}</h3>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6 col-lg-4">
+        <div class="stat-card">
+          <div class="stat-icon stat-icon--blue">
+            <i class="fas fa-exchange-alt"></i>
+          </div>
+          <div class="stat-body">
+            <p class="stat-label">Equivalências Cadastradas</p>
+            <h3 class="stat-value">{{ totalEquivalencias }}</h3>
+          </div>
+        </div>
+      </div>
+      @if (isAdmin) {
+        <div class="col-sm-6 col-lg-4">
+          <div class="stat-card">
+            <div class="stat-icon stat-icon--amber">
+              <i class="fas fa-users"></i>
+            </div>
+            <div class="stat-body">
+              <p class="stat-label">Usuários Cadastrados</p>
+              <h3 class="stat-value">{{ totalUsuarios }}</h3>
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+
+    <!-- Quick Access -->
+    <h5 class="fw-bold mb-3">Acesso Rápido</h5>
+    <div class="row g-3">
+      <div class="col-sm-6 col-lg-4">
+        <a routerLink="/admin/alimentos" class="quick-card text-decoration-none">
+          <div class="quick-icon quick-icon--green">
+            <i class="fas fa-apple-alt"></i>
+          </div>
+          <div>
+            <h6 class="mb-1">Gerenciar Alimentos</h6>
+            <small class="text-muted">Cadastrar, editar e remover alimentos</small>
+          </div>
+          <i class="fas fa-chevron-right ms-auto text-muted"></i>
+        </a>
+      </div>
+      <div class="col-sm-6 col-lg-4">
+        <a routerLink="/admin/equivalencias" class="quick-card text-decoration-none">
+          <div class="quick-icon quick-icon--blue">
+            <i class="fas fa-exchange-alt"></i>
+          </div>
+          <div>
+            <h6 class="mb-1">Gerenciar Equivalências</h6>
+            <small class="text-muted">Definir substituições entre alimentos</small>
+          </div>
+          <i class="fas fa-chevron-right ms-auto text-muted"></i>
+        </a>
+      </div>
+      @if (isAdmin) {
+        <div class="col-sm-6 col-lg-4">
+          <a routerLink="/admin/usuarios" class="quick-card text-decoration-none">
+            <div class="quick-icon quick-icon--amber">
+              <i class="fas fa-users"></i>
+            </div>
+            <div>
+              <h6 class="mb-1">Gerenciar Usuários</h6>
+              <small class="text-muted">Criar e administrar contas de usuário</small>
+            </div>
+            <i class="fas fa-chevron-right ms-auto text-muted"></i>
+          </a>
+        </div>
+      }
+      <div class="col-sm-6 col-lg-4">
+        <a routerLink="/home" class="quick-card text-decoration-none">
+          <div class="quick-icon quick-icon--purple">
+            <i class="fas fa-home"></i>
+          </div>
+          <div>
+            <h6 class="mb-1">Buscar Equivalências</h6>
+            <small class="text-muted">Ir para a tela de consulta</small>
+          </div>
+          <i class="fas fa-chevron-right ms-auto text-muted"></i>
+        </a>
+      </div>
+    </div>
+  }
+
+</div>

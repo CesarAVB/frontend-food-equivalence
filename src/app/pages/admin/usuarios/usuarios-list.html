@@ -1,0 +1,188 @@
+<div class="container-fluid py-4">
+
+  <!-- Page Header -->
+  <div class="d-flex align-items-center justify-content-between mb-4 flex-wrap gap-2">
+    <div class="d-flex align-items-center gap-3">
+      <i class="fas fa-users fa-lg text-warning"></i>
+      <div>
+        <h4 class="mb-0 fw-bold">Gestão de Usuários</h4>
+        <small class="text-muted">{{ usuariosFiltrados.length }} de {{ usuarios.length }} usuário(s)</small>
+      </div>
+    </div>
+    <button class="btn btn-success" (click)="abrirModalCriar()">
+      <i class="fas fa-plus me-1"></i>Novo Usuário
+    </button>
+  </div>
+
+  <!-- Filter -->
+  <div class="mb-3">
+    <input
+      type="text"
+      class="form-control"
+      placeholder="Buscar por nome, e-mail ou tipo..."
+      [(ngModel)]="filtroTexto"
+      [ngModelOptions]="{standalone: true}" />
+  </div>
+
+  <!-- Loading -->
+  @if (carregando) {
+    <div class="text-center py-5">
+      <div class="spinner-border text-success" role="status"></div>
+      <p class="mt-2 text-muted">Carregando usuários...</p>
+    </div>
+  }
+
+  <!-- Table -->
+  @if (!carregando) {
+    <div class="table-responsive">
+      <table class="table table-hover align-middle">
+        <thead class="table-light">
+          <tr>
+            <th>Nome</th>
+            <th>E-mail</th>
+            <th>CPF</th>
+            <th class="text-center">Tipo</th>
+            <th class="text-center">Status</th>
+            <th class="text-center">Plano</th>
+            <th class="text-center">Ações</th>
+          </tr>
+        </thead>
+        <tbody>
+          @if (usuariosFiltrados.length === 0) {
+            <tr>
+              <td colspan="7" class="text-center py-4 text-muted">
+                <i class="fas fa-inbox fa-2x mb-2 d-block"></i>
+                Nenhum usuário encontrado.
+              </td>
+            </tr>
+          }
+          @for (usuario of usuariosFiltrados; track usuario.id) {
+            <tr>
+              <td>
+                <div class="d-flex align-items-center gap-2">
+                  <div class="avatar-sm">
+                    {{ usuario.nome.charAt(0).toUpperCase() }}
+                  </div>
+                  <span class="fw-semibold">{{ usuario.nome }}</span>
+                </div>
+              </td>
+              <td class="text-muted">{{ usuario.email }}</td>
+              <td class="text-muted">{{ usuario.cpf ?? '—' }}</td>
+              <td class="text-center">
+                <span class="badge-tipo" [ngClass]="tipoBadgeClass(usuario.tipo)">
+                  {{ usuario.tipo }}
+                </span>
+              </td>
+              <td class="text-center">
+                @if (usuario.ativo) {
+                  <span class="badge bg-success-subtle text-success border border-success-subtle">Ativo</span>
+                } @else {
+                  <span class="badge bg-danger-subtle text-danger border border-danger-subtle">Inativo</span>
+                }
+              </td>
+              <td class="text-center">
+                <span class="badge bg-secondary-subtle text-secondary">{{ usuario.plano ?? 'FREE' }}</span>
+              </td>
+              <td class="text-center">
+                <div class="d-flex gap-1 justify-content-center">
+                  <button class="btn btn-sm btn-outline-primary" title="Editar" (click)="abrirModalEditar(usuario)">
+                    <i class="fas fa-edit"></i>
+                  </button>
+                  <button
+                    class="btn btn-sm"
+                    [class]="usuario.ativo ? 'btn-outline-warning' : 'btn-outline-success'"
+                    [title]="usuario.ativo ? 'Desativar' : 'Ativar'"
+                    (click)="alternarAtivo(usuario)">
+                    <i [class]="'fas fa-' + (usuario.ativo ? 'ban' : 'check')"></i>
+                  </button>
+                  <button class="btn btn-sm btn-outline-danger" title="Remover" (click)="remover(usuario)">
+                    <i class="fas fa-trash"></i>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+
+</div>
+
+<!-- Modal Usuário -->
+<div class="modal fade" id="modalUsuario" tabindex="-1" aria-labelledby="modalUsuarioLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalUsuarioLabel">
+          <i class="fas fa-user me-2"></i>{{ modoEdicao ? 'Editar Usuário' : 'Novo Usuário' }}
+        </h5>
+        <button type="button" class="btn-close" (click)="fecharModal()" aria-label="Fechar"></button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="form">
+          <div class="row g-3">
+            <div class="col-md-6">
+              <label class="form-label fw-semibold">Nome *</label>
+              <input type="text" class="form-control" formControlName="nome"
+                [class.is-invalid]="form.get('nome')?.invalid && form.get('nome')?.touched"
+                placeholder="Nome completo">
+              @if (form.get('nome')?.errors?.['required'] && form.get('nome')?.touched) {
+                <div class="invalid-feedback">Nome é obrigatório.</div>
+              }
+            </div>
+            <div class="col-md-6">
+              <label class="form-label fw-semibold">E-mail *</label>
+              <input type="email" class="form-control" formControlName="email"
+                [class.is-invalid]="form.get('email')?.invalid && form.get('email')?.touched"
+                placeholder="email@exemplo.com">
+              @if (form.get('email')?.errors?.['required'] && form.get('email')?.touched) {
+                <div class="invalid-feedback">E-mail é obrigatório.</div>
+              }
+              @if (form.get('email')?.errors?.['email'] && form.get('email')?.touched) {
+                <div class="invalid-feedback">Informe um e-mail válido.</div>
+              }
+            </div>
+            <div class="col-md-6">
+              <label class="form-label fw-semibold">CPF</label>
+              <input type="text" class="form-control" formControlName="cpf"
+                placeholder="000.000.000-00">
+            </div>
+            <div class="col-md-6">
+              <label class="form-label fw-semibold">Tipo *</label>
+              <select class="form-select" formControlName="tipo"
+                [class.is-invalid]="form.get('tipo')?.invalid && form.get('tipo')?.touched">
+                @for (tipo of tipos; track tipo) {
+                  <option [value]="tipo">{{ tipo }}</option>
+                }
+              </select>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label fw-semibold">
+                Senha {{ modoEdicao ? '(deixe em branco para manter)' : '*' }}
+              </label>
+              <input type="password" class="form-control" formControlName="senha"
+                [class.is-invalid]="form.get('senha')?.invalid && form.get('senha')?.touched"
+                placeholder="Mínimo 6 caracteres">
+              @if (form.get('senha')?.errors?.['required'] && form.get('senha')?.touched) {
+                <div class="invalid-feedback">Senha é obrigatória.</div>
+              }
+              @if (form.get('senha')?.errors?.['minlength'] && form.get('senha')?.touched) {
+                <div class="invalid-feedback">Mínimo 6 caracteres.</div>
+              }
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="fecharModal()">Cancelar</button>
+        <button type="button" class="btn btn-success" (click)="salvar()" [disabled]="salvando">
+          @if (salvando) {
+            <span class="spinner-border spinner-border-sm me-1"></span>
+          }
+          {{ modoEdicao ? 'Salvar Alterações' : 'Criar Usuário' }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -4,16 +4,44 @@
 
       <!-- Brand -->
       <div class="brand-cluster">
-        <a class="brand" href="/">
+        <a class="brand" routerLink="/home">
           <img src="images/logo-reduzido.png" alt="Lista de Substituição - André Reis" class="brand-logo">
         </a>
       </div>
 
-      <!-- Right side -->
-      <div class="header-right">
+      <!-- Navigation -->
+      @if (usuario$ | async; as usuario) {
+        <nav class="header-nav">
+          <a routerLink="/home" routerLinkActive="active" class="nav-link-item">
+            <i class="fas fa-home"></i>
+            <span>Início</span>
+          </a>
 
-        @if (usuario$ | async; as usuario) {
-          <!-- Sessão do usuário -->
+          @if (isAdminOrNutricionista) {
+            <a routerLink="/admin/dashboard" routerLinkActive="active" class="nav-link-item">
+              <i class="fas fa-tachometer-alt"></i>
+              <span>Painel</span>
+            </a>
+            <a routerLink="/admin/alimentos" routerLinkActive="active" class="nav-link-item">
+              <i class="fas fa-apple-alt"></i>
+              <span>Alimentos</span>
+            </a>
+            <a routerLink="/admin/equivalencias" routerLinkActive="active" class="nav-link-item">
+              <i class="fas fa-exchange-alt"></i>
+              <span>Equivalências</span>
+            </a>
+          }
+
+          @if (isAdmin) {
+            <a routerLink="/admin/usuarios" routerLinkActive="active" class="nav-link-item">
+              <i class="fas fa-users"></i>
+              <span>Usuários</span>
+            </a>
+          }
+        </nav>
+
+        <!-- Right side -->
+        <div class="header-right">
           <div class="account-panel">
             <div class="user-chip" [title]="usuario.email">
               <span class="user-avatar">
@@ -21,7 +49,7 @@
               </span>
               <div class="user-meta">
                 <span class="user-nome">{{ usuario.nome }}</span>
-                <span class="user-email">{{ usuario.email }}</span>
+                <span class="user-email">{{ usuario.tipo }}</span>
               </div>
             </div>
 
@@ -35,9 +63,8 @@
               <span class="logout-label">Sair</span>
             </button>
           </div>
-        }
-
-      </div>
+        </div>
+      }
 
     </div>
   </div>
