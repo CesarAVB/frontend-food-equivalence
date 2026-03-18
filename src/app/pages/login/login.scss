@@ -1,0 +1,404 @@
+.login-page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: calc(100vh - 120px); // descontando header e footer
+  padding: 24px 16px;
+}
+
+// ─── Card principal ────────────────────────────────────────────────────────────
+.login-card {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  width: 100%;
+  max-width: 900px;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-lg);
+}
+
+// ─── Painéis ───────────────────────────────────────────────────────────────────
+.login-panel {
+  &--brand {
+    position: relative;
+    background: linear-gradient(145deg, var(--clr-primary-dark) 0%, var(--clr-primary) 60%, var(--clr-primary-light) 100%);
+    padding: 52px 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  &--form {
+    background: var(--clr-surface);
+    padding: 52px 44px;
+    display: flex;
+    align-items: center;
+  }
+}
+
+// ─── Decoração de fundo (círculos) ─────────────────────────────────────────────
+.brand-bg-decor {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.decor-circle {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(180, 210, 26, 0.12);
+
+  &--1 {
+    width: 220px;
+    height: 220px;
+    top: -60px;
+    right: -60px;
+  }
+  &--2 {
+    width: 140px;
+    height: 140px;
+    bottom: 40px;
+    left: -40px;
+    background: rgba(255, 255, 255, 0.07);
+  }
+  &--3 {
+    width: 80px;
+    height: 80px;
+    bottom: 140px;
+    right: 20px;
+    background: rgba(180, 210, 26, 0.08);
+  }
+}
+
+// ─── Conteúdo do painel de marca ───────────────────────────────────────────────
+.brand-content {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.brand-logo {
+  height: 56px;
+  width: auto;
+  object-fit: contain;
+  filter: brightness(0) invert(1);
+  align-self: flex-start;
+}
+
+.brand-title {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #ffffff !important;
+  line-height: 1.3;
+  margin: 0;
+}
+
+.brand-subtitle {
+  font-size: 0.92rem;
+  color: rgba(255, 255, 255, 0.82);
+  line-height: 1.6;
+  margin: 0;
+}
+
+// ─── Badges nutricionais ───────────────────────────────────────────────────────
+.nutrition-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.nut-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255, 255, 255, 0.14);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+  padding: 6px 14px;
+  border-radius: 100px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  backdrop-filter: blur(4px);
+  transition: var(--transition);
+
+  i {
+    font-size: 0.85rem;
+    color: var(--clr-accent);
+  }
+
+  &:hover {
+    background: rgba(180, 210, 26, 0.22);
+    border-color: var(--clr-accent);
+  }
+}
+
+// ─── Citação ───────────────────────────────────────────────────────────────────
+.brand-quote {
+  border-left: 3px solid var(--clr-accent);
+  padding: 10px 16px;
+  margin: 0;
+  font-size: 0.82rem;
+  font-style: italic;
+  color: rgba(255, 255, 255, 0.78);
+  line-height: 1.6;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+
+  i {
+    color: var(--clr-accent);
+    margin-right: 6px;
+  }
+}
+
+// ─── Logo mobile ───────────────────────────────────────────────────────────────
+.mobile-logo {
+  display: none;
+  justify-content: center;
+  margin-bottom: 8px;
+
+  .mobile-logo-img {
+    height: 48px;
+    width: auto;
+    object-fit: contain;
+  }
+}
+
+// ─── Container do formulário ───────────────────────────────────────────────────
+.form-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.form-header {
+  .form-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--clr-primary) !important;
+    margin-bottom: 4px;
+  }
+
+  .form-subtitle {
+    font-size: 0.87rem;
+    color: var(--clr-text-muted);
+    margin: 0;
+  }
+}
+
+// ─── Grupos de campo ───────────────────────────────────────────────────────────
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.form-label {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--clr-text);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0;
+
+  .label-icon {
+    color: var(--clr-primary);
+    font-size: 0.85rem;
+    width: 14px;
+    text-align: center;
+  }
+}
+
+.input-wrapper {
+  position: relative;
+
+  .form-control {
+    width: 100%;
+    padding: 10px 14px;
+    font-size: 0.93rem;
+    border-radius: var(--radius-sm);
+    border: 2px solid var(--clr-border);
+    background: #f8fdfb;
+    color: var(--clr-text);
+    transition: var(--transition);
+
+    &:focus {
+      border-color: var(--clr-primary);
+      box-shadow: 0 0 0 3px rgba(26, 95, 122, 0.12);
+      background: #fff;
+      outline: none;
+    }
+
+    &.is-invalid {
+      border-color: #dc3545;
+      background: #fff8f8;
+
+      &:focus {
+        box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.12);
+      }
+    }
+
+    &::placeholder {
+      color: #aabfba;
+    }
+  }
+
+  &--password .form-control {
+    padding-right: 44px;
+  }
+}
+
+.toggle-password {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--clr-text-muted);
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.2s ease;
+
+  &:hover {
+    color: var(--clr-primary);
+  }
+
+  i { font-size: 0.9rem; }
+}
+
+.field-error {
+  font-size: 0.8rem;
+  color: #dc3545;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin-top: 2px;
+}
+
+// ─── Link esqueceu senha ───────────────────────────────────────────────────────
+.forgot-row {
+  display: flex;
+  justify-content: flex-end;
+
+  .forgot-link {
+    font-size: 0.83rem;
+    color: var(--clr-primary);
+    font-weight: 500;
+    text-decoration: none;
+    transition: color 0.2s ease;
+
+    &:hover {
+      color: var(--clr-accent-dark);
+      text-decoration: underline;
+    }
+  }
+}
+
+// ─── Botão principal ───────────────────────────────────────────────────────────
+.btn-login {
+  width: 100%;
+  padding: 12px;
+  background: linear-gradient(135deg, var(--clr-primary) 0%, var(--clr-primary-light) 100%);
+  color: #ffffff;
+  font-size: 0.95rem;
+  font-weight: 700;
+  border: none;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: var(--transition);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  letter-spacing: 0.3px;
+
+  &:hover:not(:disabled) {
+    background: linear-gradient(135deg, var(--clr-primary-dark) 0%, var(--clr-primary) 100%);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-md);
+  }
+
+  &:active:not(:disabled) {
+    transform: translateY(0);
+  }
+
+  &:disabled {
+    opacity: 0.72;
+    cursor: not-allowed;
+  }
+}
+
+// ─── Rodapé do formulário ──────────────────────────────────────────────────────
+.form-footer {
+  border-top: 1px solid var(--clr-border);
+  padding-top: 16px;
+
+  p {
+    font-size: 0.78rem;
+    color: var(--clr-text-muted);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    justify-content: center;
+    margin: 0;
+  }
+
+  .footer-icon {
+    color: var(--clr-primary);
+  }
+}
+
+// ─── Responsividade ────────────────────────────────────────────────────────────
+@media (max-width: 768px) {
+  .login-page {
+    padding: 16px 12px;
+    min-height: calc(100vh - 100px);
+    align-items: flex-start;
+  }
+
+  .login-card {
+    grid-template-columns: 1fr;
+    max-width: 440px;
+    margin: 0 auto;
+  }
+
+  .login-panel--brand {
+    display: none; // painel visual oculto no mobile
+  }
+
+  .login-panel--form {
+    padding: 36px 28px;
+    border-radius: var(--radius-lg);
+  }
+
+  .mobile-logo {
+    display: flex;
+  }
+}
+
+@media (max-width: 480px) {
+  .login-panel--form {
+    padding: 28px 20px;
+  }
+
+  .form-header .form-title {
+    font-size: 1.3rem;
+  }
+}
+
+@media (min-width: 769px) and (max-width: 960px) {
+  .login-panel--brand {
+    padding: 40px 28px;
+  }
+
+  .login-panel--form {
+    padding: 40px 32px;
+  }
+}

@@ -1,0 +1,166 @@
+<div class="login-page">
+  <div class="login-card">
+
+    <!-- Painel esquerdo: visual nutricional -->
+    <div class="login-panel login-panel--brand">
+      <div class="brand-bg-decor">
+        <span class="decor-circle decor-circle--1"></span>
+        <span class="decor-circle decor-circle--2"></span>
+        <span class="decor-circle decor-circle--3"></span>
+      </div>
+      <div class="brand-content">
+        <img src="images/logo-reduzido.png" alt="André Reis Nutricionista" class="brand-logo">
+        <h2 class="brand-title">Bem-vindo de volta!</h2>
+        <p class="brand-subtitle">
+          Acesse sua conta e continue acompanhando sua jornada nutricional com precisão.
+        </p>
+
+        <div class="nutrition-badges">
+          <div class="nut-badge">
+            <i class="fas fa-apple-alt"></i>
+            <span>Frutas</span>
+          </div>
+          <div class="nut-badge">
+            <i class="fas fa-carrot"></i>
+            <span>Vegetais</span>
+          </div>
+          <div class="nut-badge">
+            <i class="fas fa-seedling"></i>
+            <span>Grãos</span>
+          </div>
+          <div class="nut-badge">
+            <i class="fas fa-heartbeat"></i>
+            <span>Saúde</span>
+          </div>
+        </div>
+
+        <blockquote class="brand-quote">
+          <i class="fas fa-leaf"></i>
+          "A alimentação é a base de uma vida saudável e equilibrada."
+        </blockquote>
+      </div>
+    </div>
+
+    <!-- Painel direito: formulário -->
+    <div class="login-panel login-panel--form">
+      <div class="form-container">
+
+        <!-- Logo mobile (visível apenas em telas pequenas) -->
+        <div class="mobile-logo">
+          <img src="images/logo-reduzido.png" alt="André Reis Nutricionista" class="mobile-logo-img">
+        </div>
+
+        <div class="form-header">
+          <h1 class="form-title">Entrar na conta</h1>
+          <p class="form-subtitle">Informe suas credenciais para acessar o sistema</p>
+        </div>
+
+        <!-- Mensagem de erro -->
+        @if (errorMessage) {
+          <div class="alert alert-danger d-flex align-items-center gap-2" role="alert">
+            <i class="fas fa-exclamation-circle"></i>
+            <span>{{ errorMessage }}</span>
+          </div>
+        }
+
+        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" novalidate>
+
+          <!-- Campo Email -->
+          <div class="form-group">
+            <label for="email" class="form-label">
+              <i class="fas fa-envelope label-icon"></i>
+              E-mail
+            </label>
+            <div class="input-wrapper">
+              <input
+                id="email"
+                type="email"
+                class="form-control"
+                [class.is-invalid]="email?.invalid && email?.touched"
+                formControlName="email"
+                placeholder="seu@email.com"
+                autocomplete="email"
+              >
+            </div>
+            @if (email?.invalid && email?.touched) {
+              <div class="field-error">
+                @if (email?.errors?.['required']) {
+                  <i class="fas fa-circle-exclamation"></i> O e-mail é obrigatório.
+                } @else if (email?.errors?.['email']) {
+                  <i class="fas fa-circle-exclamation"></i> Informe um e-mail válido.
+                }
+              </div>
+            }
+          </div>
+
+          <!-- Campo Senha -->
+          <div class="form-group">
+            <label for="senha" class="form-label">
+              <i class="fas fa-lock label-icon"></i>
+              Senha
+            </label>
+            <div class="input-wrapper input-wrapper--password">
+              <input
+                id="senha"
+                [type]="showPassword ? 'text' : 'password'"
+                class="form-control"
+                [class.is-invalid]="senha?.invalid && senha?.touched"
+                formControlName="senha"
+                placeholder="Sua senha"
+                autocomplete="current-password"
+              >
+              <button
+                type="button"
+                class="toggle-password"
+                (click)="togglePassword()"
+                [title]="showPassword ? 'Ocultar senha' : 'Mostrar senha'"
+                tabindex="-1"
+              >
+                <i [class]="showPassword ? 'fas fa-eye-slash' : 'fas fa-eye'"></i>
+              </button>
+            </div>
+            @if (senha?.invalid && senha?.touched) {
+              <div class="field-error">
+                @if (senha?.errors?.['required']) {
+                  <i class="fas fa-circle-exclamation"></i> A senha é obrigatória.
+                } @else if (senha?.errors?.['minlength']) {
+                  <i class="fas fa-circle-exclamation"></i> A senha deve ter pelo menos 6 caracteres.
+                }
+              </div>
+            }
+          </div>
+
+          <!-- Esqueceu a senha -->
+          <div class="forgot-row">
+            <a href="#" class="forgot-link">Esqueceu sua senha?</a>
+          </div>
+
+          <!-- Botão de envio -->
+          <button
+            type="submit"
+            class="btn btn-login"
+            [disabled]="isLoading"
+          >
+            @if (isLoading) {
+              <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+              Entrando...
+            } @else {
+              <i class="fas fa-sign-in-alt me-2"></i>
+              Entrar
+            }
+          </button>
+
+        </form>
+
+        <div class="form-footer">
+          <p>
+            <i class="fas fa-shield-alt footer-icon"></i>
+            Acesso restrito a profissionais cadastrados
+          </p>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</div>
