@@ -1,17 +1,27 @@
-  .site-header {
-  background: #f0f8f5;
-  border-bottom: 2px solid #4ade80;
-  box-shadow: 0 1px 8px rgba(26, 95, 122, 0.08);
+.site-header {
+  background: linear-gradient(180deg, rgba(248, 253, 251, 0.95) 0%, rgba(240, 248, 245, 0.95) 100%);
+  border-bottom: 1px solid rgba(26, 95, 122, 0.14);
+  box-shadow: 0 6px 22px rgba(26, 95, 122, 0.08);
+  backdrop-filter: blur(8px);
   position: sticky;
   top: 0;
   z-index: 1000;
   padding: 8px 0;
 
+  &::after {
+    content: '';
+    display: block;
+    height: 2px;
+    background: linear-gradient(90deg, transparent 0%, #22c55e 20%, #34d399 80%, transparent 100%);
+    opacity: 0.55;
+  }
+
   .header-inner {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 12px;
+    gap: 16px;
+    min-height: 62px;
   }
 
   // --- Brand ---
@@ -20,14 +30,17 @@
     align-items: center;
     text-decoration: none;
     flex-shrink: 0;
-    padding: 4px 0;
-    opacity: 1;
-    transition: opacity 180ms ease;
+    padding: 2px 8px;
+    border-radius: 14px;
+    transition: transform 0.2s ease, background-color 0.2s ease;
 
-    &:hover { opacity: 0.85; }
+    &:hover {
+      transform: translateY(-1px);
+      background: rgba(255, 255, 255, 0.72);
+    }
 
     .brand-logo {
-      height: 52px;
+      height: 50px;
       width: auto;
       display: block;
       object-fit: contain;
@@ -38,64 +51,37 @@
   .header-right {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 10px;
     flex-wrap: wrap;
     justify-content: flex-end;
   }
 
+  // --- Sessão do usuário ---
   .account-panel {
     display: inline-flex;
     align-items: center;
-    gap: 10px;
-    background: #ffffff;
-    border: 1px solid var(--clr-border);
+    gap: 8px;
+    background: rgba(255, 255, 255, 0.88);
+    border: 1px solid rgba(26, 95, 122, 0.14);
     border-radius: 999px;
     padding: 4px;
-    box-shadow: 0 2px 10px rgba(26, 95, 122, 0.08);
+    box-shadow: 0 4px 14px rgba(26, 95, 122, 0.1);
   }
 
-  .insta-btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    background: linear-gradient(135deg, #833ab4, #fd1d1d, #fcb045);
-    color: #ffffff;
-    text-decoration: none;
-    padding: 6px 14px;
-    border-radius: 100px;
-    font-size: 13px;
-    font-weight: 600;
-    transition: opacity 0.2s ease, transform 0.2s ease;
-    white-space: nowrap;
-
-    i { font-size: 15px; }
-
-    &:hover {
-      opacity: 0.88;
-      transform: translateY(-1px);
-      color: #ffffff;
-    }
-
-    .insta-label {
-      @media (max-width: 560px) { display: none; }
-    }
-  }
-
-  // --- User chip ---
   .user-chip {
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    background: transparent;
-    border: none;
-    border-radius: 100px;
-    padding: 4px 8px 4px 4px;
-    max-width: 250px;
+    background: #ffffff;
+    border: 1px solid rgba(26, 95, 122, 0.08);
+    border-radius: 999px;
+    padding: 4px 10px 4px 4px;
+    max-width: 270px;
   }
 
   .user-avatar {
-    width: 28px;
-    height: 28px;
+    width: 30px;
+    height: 30px;
     border-radius: 50%;
     background: linear-gradient(135deg, var(--clr-primary) 0%, var(--clr-primary-light) 100%);
     color: #ffffff;
@@ -106,17 +92,7 @@
     justify-content: center;
     flex-shrink: 0;
     letter-spacing: 0.5px;
-  }
-
-  .user-nome {
-    font-size: 12.5px;
-    font-weight: 600;
-    color: var(--clr-text);
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    max-width: 165px;
-    line-height: 1.1;
+    box-shadow: 0 0 0 2px rgba(42, 122, 154, 0.12);
   }
 
   .user-meta {
@@ -126,31 +102,42 @@
     min-width: 0;
   }
 
-  .user-email {
-    font-size: 11px;
-    color: var(--clr-text-muted);
+  .user-nome {
+    font-size: 12.5px;
+    font-weight: 700;
+    color: var(--clr-text);
+    line-height: 1.1;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    max-width: 165px;
-    line-height: 1.1;
+    max-width: 180px;
   }
 
-  // --- Logout button ---
+  .user-email {
+    font-size: 10.8px;
+    color: var(--clr-text-muted);
+    line-height: 1.1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 180px;
+  }
+
+  // --- Logout ---
   .logout-btn {
     display: inline-flex;
     align-items: center;
-    gap: 5px;
-    background: var(--clr-bg-alt);
-    border: 1px solid var(--clr-border);
+    gap: 6px;
+    background: #f3faf7;
+    border: 1px solid rgba(26, 95, 122, 0.14);
     color: var(--clr-text-muted);
     padding: 7px 12px;
-    border-radius: 100px;
+    border-radius: 999px;
     font-size: 12px;
-    font-weight: 600;
+    font-weight: 700;
     cursor: pointer;
-    transition: all 0.2s ease;
     white-space: nowrap;
+    transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
 
     i { font-size: 13px; }
 
@@ -158,18 +145,29 @@
       background: #fff1f1;
       border-color: #f87171;
       color: #dc2626;
+      transform: translateY(-1px);
     }
   }
 
-@media (max-width: 560px) {
-    .header-inner { justify-content: space-between; }
-    .brand-logo { height: 44px; }
-    .account-panel { padding: 3px; gap: 6px; }
-    .user-nome { max-width: 90px; }
+  .brand:focus-visible,
+  .logout-btn:focus-visible {
+    outline: 3px solid rgba(26, 95, 122, 0.24);
+    outline-offset: 2px;
+  }
+
+  @media (max-width: 860px) {
+    .header-inner { gap: 10px; }
+    .brand .brand-logo { height: 44px; }
     .user-email { display: none; }
+    .account-panel { gap: 6px; }
+  }
+
+  @media (max-width: 560px) {
+    .header-right { gap: 8px; }
+    .brand { padding-left: 0; }
+    .user-nome { max-width: 92px; }
     .logout-label { display: none; }
-    .insta-btn { display: none; }
-    .user-chip { padding: 4px; max-width: 120px; }
+    .user-chip { padding: 4px 6px 4px 4px; max-width: 126px; }
     .logout-btn { padding: 7px 9px; }
   }
 }

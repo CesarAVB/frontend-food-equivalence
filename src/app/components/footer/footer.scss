@@ -1,9 +1,52 @@
 .site-footer {
   background: linear-gradient(135deg, #0d3d52 0%, #1a5f7a 100%);
   border-top: 3px solid #4ade80;
-  padding: 18px 0;
+  padding: 20px 0 18px;
   margin-top: 60px;
   text-align: center;
+
+  .footer-contact {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 12px;
+  }
+
+  .contact-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 12px;
+    border-radius: 999px;
+    border: 1px solid rgba(255, 255, 255, 0.24);
+    background: rgba(255, 255, 255, 0.08);
+    color: #e9fff6;
+    text-decoration: none;
+    font-size: 12.5px;
+    font-weight: 600;
+    transition: transform 0.2s ease, background-color 0.2s ease, border-color 0.2s ease;
+
+    i {
+      font-size: 14px;
+    }
+
+    &:hover {
+      transform: translateY(-1px);
+      background: rgba(255, 255, 255, 0.14);
+      border-color: rgba(255, 255, 255, 0.38);
+      color: #ffffff;
+    }
+  }
+
+  .contact-link--instagram {
+    background: linear-gradient(135deg, rgba(131, 58, 180, 0.35), rgba(253, 29, 29, 0.35), rgba(252, 176, 69, 0.35));
+  }
+
+  .contact-link--whatsapp {
+    background: rgba(34, 197, 94, 0.24);
+  }
 
   .footer-copy {
     font-size: 13px;
@@ -20,6 +63,25 @@
     .footer-author:hover {
       color: #ffffff;
       text-decoration: none;
+    }
+  }
+
+  @media (max-width: 560px) {
+    .footer-contact {
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    .contact-link {
+      width: 100%;
+      justify-content: center;
+      font-size: 12px;
+      padding: 8px 10px;
+    }
+
+    .footer-copy {
+      font-size: 12px;
+      line-height: 1.5;
     }
   }
 }
