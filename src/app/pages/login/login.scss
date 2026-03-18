@@ -271,6 +271,11 @@
   gap: 6px;
 }
 
+/* Espaçamento pequeno entre grupos de campos adjacentes (ex: entre E-mail e Senha) */
+.form-group + .form-group {
+  margin-top: 8px;
+}
+
 .form-label {
   font-size: 0.88rem;
   font-weight: 600;
