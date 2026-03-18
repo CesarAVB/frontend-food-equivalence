@@ -21,8 +21,8 @@ export class LoginComponent {
   constructor(private fb: FormBuilder, private auth: AuthService) {
     // Credenciais de teste padrão (apenas para desenvolvimento)
     this.loginForm = this.fb.group({
-      email: ['teste@exemplo.com', [Validators.required, Validators.email]],
-      senha: ['senha123', [Validators.required, Validators.minLength(6)]]
+      email: ['admin@admin.com', [Validators.required, Validators.email]],
+      senha: ['admin123', [Validators.required, Validators.minLength(6)]]
     });
   }
 
