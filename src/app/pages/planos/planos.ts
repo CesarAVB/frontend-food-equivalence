@@ -31,50 +31,34 @@ export class PlanosComponent implements OnInit {
 
   readonly planos: Plano[] = [
     {
-      id: 'FREE',
-      nome: 'Gratuito',
-      preco: 'R$ 0',
-      periodo: 'para sempre',
-      descricao: 'Acesso básico para consulta de equivalências.',
+      id: 'DEMO',
+      nome: 'Demonstração',
+      preco: 'Gratuito',
+      periodo: '',
+      descricao: 'Teste todos os recursos por 30 dias.',
       recursos: [
-        'Consulta de equivalências alimentares',
-        'Busca por grupo alimentar',
-        'Exportação CSV',
-        'Acesso ao banco de 95 alimentos'
+        'Acesso completo aos recursos por 30 dias',
+        'Sem necessidade de cartão',
+        'Relatórios básicos e histórico de consultas',
+        'Exportação CSV'
       ],
       destaque: false,
-      cor: 'plano-free'
+      cor: 'plano-demo'
     },
     {
       id: 'BASIC',
       nome: 'Basic',
-      preco: 'R$ 29,90',
+      preco: 'R$ 2,00',
       periodo: 'por mês',
-      descricao: 'Ideal para pacientes em acompanhamento nutricional.',
+      descricao: 'Plano mensal econômico para uso contínuo.',
       recursos: [
-        'Tudo do plano Gratuito',
-        'Histórico de consultas',
-        'Plano alimentar personalizado',
-        'Suporte por e-mail'
-      ],
-      destaque: false,
-      cor: 'plano-basic'
-    },
-    {
-      id: 'PRO',
-      nome: 'Pro',
-      preco: 'R$ 59,90',
-      periodo: 'por mês',
-      descricao: 'Para quem busca o máximo de recursos e suporte prioritário.',
-      recursos: [
-        'Tudo do plano Basic',
-        'Relatórios nutricionais avançados',
-        'Acesso antecipado a novos recursos',
-        'Suporte prioritário via WhatsApp',
-        'Múltiplos perfis de paciente'
+        'Tudo do plano Demonstração',
+        'Histórico completo',
+        'Suporte por e-mail',
+        'Acesso a atualizações'
       ],
       destaque: true,
-      cor: 'plano-pro'
+      cor: 'plano-basic'
     }
   ];
 
