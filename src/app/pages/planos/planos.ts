@@ -82,7 +82,14 @@ export class PlanosComponent implements OnInit {
 
     this.pagamento.iniciarCheckout(planoId).subscribe({
       next: (res) => {
-        window.location.href = res.checkoutUrl;
+        console.log('iniciarCheckout response:', res);
+        const url = res?.checkoutUrl ?? res?.url;
+        if (url) {
+          window.location.href = url;
+        } else {
+          this.carregandoCheckout = null;
+          this.notifier.error('Resposta inválida do servidor ao iniciar checkout.');
+        }
       },
       error: (err) => {
         this.carregandoCheckout = null;
@@ -96,7 +103,13 @@ export class PlanosComponent implements OnInit {
     this.carregandoPortal = true;
     this.pagamento.abrirPortal().subscribe({
       next: (res) => {
-        window.location.href = res.portalUrl;
+        const url = res?.portalUrl ?? res?.url;
+        if (url) {
+          window.location.href = url;
+        } else {
+          this.carregandoPortal = false;
+          this.notifier.error('Resposta inválida do servidor ao abrir portal de assinatura.');
+        }
       },
       error: (err) => {
         this.carregandoPortal = false;

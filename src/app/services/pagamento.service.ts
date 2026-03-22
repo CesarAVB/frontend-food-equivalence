@@ -11,11 +11,15 @@ export interface CheckoutRequest {
 }
 
 export interface CheckoutResponse {
-  checkoutUrl: string;
+  checkoutUrl?: string;
+  // Alguns backends retornam a propriedade como `url`; aceite ambos
+  url?: string;
 }
 
 export interface PortalResponse {
-  portalUrl: string;
+  portalUrl?: string;
+  // Alguns backends retornam a propriedade como `url`;
+  url?: string;
 }
 
 @Injectable({ providedIn: 'root' })
